@@ -24,7 +24,7 @@ namespace Jenkins {
         static BuildPlayerOptions buildPlayerOptions = new BuildPlayerOptions();        
 
         public static void parseCommandLineArgs() {
-            string programName = "NothingGame"; // hardcoded here, but can also be passed in with -appname argument
+            string programName = "JenkinsCiTest"; // hardcoded here, but can also be passed in with -appname argument
 
             string[] args = System.Environment.GetCommandLineArgs();
             int i = 0;
