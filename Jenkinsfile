@@ -1,4 +1,4 @@
-UNITY_PATH = '%unity_nothing_game%' // create system environment var pointing to unity install path
+UNITY_PATH = '%unity%' // create system environment var pointing to unity install path
 
 pipeline {
     parameters {
