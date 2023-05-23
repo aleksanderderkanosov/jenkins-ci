@@ -1,5 +1,3 @@
-UNITY_PATH = '%unity%' // create system environment var pointing to unity install path
-
 pipeline {
     //Definition of env variables that can be used throughout the pipeline job
     environment {
@@ -7,7 +5,7 @@ pipeline {
         String gitUrl = "https://github.com/aleksanderderkanosov/jenkins-ci.git"
         
         // Unity tool installation
-        UNITY_EXECUTABLE = UNITY_PATH // create system environment var pointing to unity install path
+        UNITY_EXECUTABLE = "E:\\Unity\\Hub\\Editor\\2021.3.5f1\\Editor\\Unity.exe" // create system environment var pointing to unity install path
 
         // Unity Build params
         BUILD_NAME = "Android-${currentBuild.number}"
