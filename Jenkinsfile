@@ -24,7 +24,7 @@ pipeline {
     }
     //Variable inputs that modify the behavior of the job
     parameters {
-        string(name: 'gitBranch', defaultValue: 'development', description: 'Set the branch.')
+        string(name: 'gitBranch', defaultValue: 'master', description: 'Set the branch.')
         booleanParam(name: 'developmentBuild', defaultValue: true, description: 'Choose the buildType.')
     }
     //Tag Selector of the agent that will run the build job
@@ -57,7 +57,7 @@ pipeline {
                     bat 'mkdir %outputFolder%'
 
                     echo "Buld App..."
-                    bat '%UNITY_EXECUTABLE% -projectPath %CD% -quit -batchmode -nographics -buildTarget %buildTarget% -customBuildPath %CD%\\%outputFolder%\\ -customBuildName %BUILD_NAME% -executeMethod BuildCommand.PerformBuilds'
+                    bat '%UNITY_EXECUTABLE% -projectPath %CD% -quit -batchmode -nographics -buildTarget %buildTarget% -customBuildPath %CD%\\%outputFolder%\\ -customBuildName %BUILD_NAME% -executeMethod BuildCommand.PerformBuild'
                 }
             }
         }
