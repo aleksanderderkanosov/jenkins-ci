@@ -9,7 +9,7 @@ pipeline {
     agent any 
     
     environment {
-        appname = "NothingGame" // Set to your own game. "NothingGame: The game that does nothing!"
+        appname = "JenkinsCiTest" // Set to your own game
         release_name = "${ "${release}" == "alpha" || "${release}" == "beta" ? "${release}" : "" }" 
         target = "${ "${build}" == "Release" ? "${appname}${release_name}.exe" : " ${appname}_Debug_${release_name}.exe" }" // append debug for debug builds, nothing for release builds
     }
