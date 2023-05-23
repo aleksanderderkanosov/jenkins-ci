@@ -1,4 +1,12 @@
 pipeline {
+
+    //Variable inputs that modify the behavior of the job
+    parameters {
+        choice(name: 'buildTarget', choices: ['Android', 'StandaloneWindows'], description: "Choose the target platform.")
+        string(name: 'gitBranch', defaultValue: 'master', description: 'Set the branch.')
+        booleanParam(name: 'developmentBuild', defaultValue: true, description: 'Choose the buildType.')
+    }
+
     //Definition of env variables that can be used throughout the pipeline job
     environment {
         // Github data
@@ -8,8 +16,7 @@ pipeline {
         UNITY_EXECUTABLE = "E:\\Unity\\Hub\\Editor\\2021.3.5f1\\Editor\\Unity.exe" // create system environment var pointing to unity install path
 
         // Unity Build params
-        BUILD_NAME = "Android-${currentBuild.number}"
-        //String buildTarget = "Android"
+        BUILD_NAME = "${buildTarget}-${currentBuild.number}"
         String outputFolder = "CurrentBuild"
 
         //PARAMETERS DATA
@@ -17,17 +24,13 @@ pipeline {
 
         // Add other EnvVars here
     }
+
     //Options: add timestamp to job logs and limiting the number of builds to be kept.
     options {
         timestamps()
         buildDiscarder(logRotator(numToKeepStr: "10"))
     }
-    //Variable inputs that modify the behavior of the job
-    parameters {
-        choice(name: 'buildTarget', choices: ['Android', 'Win64'], description: "Choose the target platform.")
-        string(name: 'gitBranch', defaultValue: 'master', description: 'Set the branch.')
-        booleanParam(name: 'developmentBuild', defaultValue: true, description: 'Choose the buildType.')
-    }
+
     //Tag Selector of the agent that will run the build job
     agent any
     /*agent {
