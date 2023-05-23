@@ -36,12 +36,13 @@ pipeline {
         booleanParam(name: 'developmentBuild', defaultValue: true, description: 'Choose the buildType.')
     }
     //Tag Selector of the agent that will run the build job
-    agent {
+    agent any
+    /*agent {
         node {
             // Jenkins node to be used must have the label android
             label "android"
         }
-    }
+    }*/
     //The steps necessary to generate the desired build
     stages {
         stage('Git Pull') {
