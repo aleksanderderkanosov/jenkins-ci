@@ -1,8 +1,6 @@
 using UnityEditor;
 using System.Linq;
 using System;
-using System.Collections.Generic;
-using System.IO;
 
 static class BuildCommand {
     private const string IS_DEVELOPMENT_BUILD = "IS_DEVELOPMENT_BUILD";
