@@ -53,21 +53,21 @@ pipeline {
                     } catch (e) {
                         currentBuild.result = "FAILED"
                         echo "JOB FAILED: The selected branch does not exists."
+                    }
                 }
             }
         }
         stage('Build Application') {
-        steps {
-            script {
-                echo "create Application output folder..."
-                bat 'mkdir %outputFolder%'
+            steps {
+                script {
+                    echo "create Application output folder..."
+                    bat 'mkdir %outputFolder%'
 
-                echo "Buld App..."
-                bat '%UNITY_EXECUTABLE% -projectPath %CD% -quit -batchmode -nographics -buildTarget %buildTarget% -customBuildPath %CD%\\%outputFolder%\\ -customBuildName %BUILD_NAME% -executeMethod BuildCommand.PerformBuilds'
+                    echo "Buld App..."
+                    bat '%UNITY_EXECUTABLE% -projectPath %CD% -quit -batchmode -nographics -buildTarget %buildTarget% -customBuildPath %CD%\\%outputFolder%\\ -customBuildName %BUILD_NAME% -executeMethod BuildCommand.PerformBuilds'
+                }
             }
         }
-    }
-    }
     }
     //Any action we want to perform after all the steps have succeeded or failed
     post {
