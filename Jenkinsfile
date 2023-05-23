@@ -5,15 +5,9 @@ pipeline {
     environment {
         // Github data
         String gitUrl = "https://github.com/aleksanderderkanosov/jenkins-ci.git"
-        String gitCredentials = "jenkins-private-key" // set a PrivateKey credential if your repo is private
         
         // Unity tool installation
         UNITY_EXECUTABLE = '%unity%' // create system environment var pointing to unity install path
-        
-        // Unity data
-        UNITY_ID_EMAIL = credentials('jenkins-id-for-unity-email')
-        UNITY_ID_PASSWORD = credentials('jenkins-id-for-unity-password')
-        UNITY_ID_LICENSE = credentials('jenkins-id-for-unity-license')
 
         // Unity Build params
         BUILD_NAME = "Android-${currentBuild.number}"
@@ -50,7 +44,7 @@ pipeline {
                 echo "Git pull repo"
                 script {
                     try {
-                        git url: "${gitUrl}", branch: "${gitBranch}", credentialsId: "${gitCredentials}"
+                        git url: "${gitUrl}", branch: "${gitBranch}"
                     } catch (e) {
                         currentBuild.result = "FAILED"
                         echo "JOB FAILED: The selected branch does not exists."
