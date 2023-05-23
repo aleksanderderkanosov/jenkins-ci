@@ -9,7 +9,7 @@ pipeline {
 
         // Unity Build params
         BUILD_NAME = "Android-${currentBuild.number}"
-        String buildTarget = "Android"
+        //String buildTarget = "Android"
         String outputFolder = "CurrentBuild"
 
         //PARAMETERS DATA
@@ -24,6 +24,7 @@ pipeline {
     }
     //Variable inputs that modify the behavior of the job
     parameters {
+        choice(name: 'buildTarget', choices: ['Android', 'Win64'], description: "Choose the target platform.")
         string(name: 'gitBranch', defaultValue: 'master', description: 'Set the branch.')
         booleanParam(name: 'developmentBuild', defaultValue: true, description: 'Choose the buildType.')
     }
