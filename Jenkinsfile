@@ -44,6 +44,7 @@ pipeline {
     stages {
         stage('Git Pull') {
             steps {
+                agent any
                 echo "Git pull repo"
                 script {
                     try {
