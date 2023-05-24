@@ -9,6 +9,7 @@ pipeline {
 
     //Definition of env variables that can be used throughout the pipeline job
     environment {
+        appname = "JenkinsCiTest" // Set to your own game
         // Github data
         String gitUrl = "https://github.com/aleksanderderkanosov/jenkins-ci.git"
         
@@ -16,7 +17,7 @@ pipeline {
         UNITY_EXECUTABLE = "E:\\Unity\\Hub\\Editor\\2021.3.5f1\\Editor\\Unity.exe" // create system environment var pointing to unity install path
 
         // Unity Build params
-        BUILD_NAME = "${buildTarget}-${currentBuild.number}"
+        BUILD_NAME = "${appname}_${buildTarget}_${currentBuild.number}"
         String outputFolder = "CurrentBuild"
 
         //PARAMETERS DATA
@@ -61,7 +62,7 @@ pipeline {
                     bat 'cd %outputFolder% || mkdir %outputFolder%'
 
                     echo "Buld App..."
-                    bat '%UNITY_EXECUTABLE% -projectPath %CD% -quit -batchmode -nographics -buildTarget %buildTarget% -customBuildPath %CD%\\%outputFolder%\\ -customBuildName %BUILD_NAME% -executeMethod BuildCommand.PerformBuild'
+                    bat '%UNITY_EXECUTABLE% -projectPath %CD% -quit -batchmode -nographics -buildTarget Android -buildTarget StandaloneWindows -customBuildPath %CD%\\%outputFolder%\\ -customBuildName %BUILD_NAME% -executeMethod BuildCommand.PerformBuild'
                 }
             }
         }

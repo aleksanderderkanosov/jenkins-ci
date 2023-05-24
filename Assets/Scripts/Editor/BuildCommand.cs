@@ -11,8 +11,9 @@ static class BuildCommand {
         Console.WriteLine(":: Performing build");
 
         // Common for all Platforms
-        var buildTarget = GetBuildTarget();
-        var targetGroup = GetBuildTargetGroup(buildTarget);
+        //var buildTarget = GetBuildTarget();
+        var buildTargets = GetBuildTargets();
+        //var targetGroup = GetBuildTargetGroup(buildTarget);
 
         bool isDevelopmentBuild = IsDevelopmentType();
         HandleDevelopmentType(isDevelopmentBuild);
@@ -20,14 +21,17 @@ static class BuildCommand {
         var buildPath = GetBuildPath();
         var buildName = GetBuildName();
         var buildOptions = GetBuildOptions();
-        var fixedBuildPath = GetFixedBuildPath(buildTarget, buildPath, buildName);
 
-        var buildReport = BuildPipeline.BuildPlayer(GetEnabledScenes(), fixedBuildPath, buildTarget, buildOptions);
+        foreach (var item in buildTargets) {
+            var fixedBuildPath = GetFixedBuildPath(item, buildPath, buildName);
 
-        if (buildReport.summary.result != UnityEditor.Build.Reporting.BuildResult.Succeeded)
-            throw new Exception($"Build ended with {buildReport.summary.result} status");
+            var buildReport = BuildPipeline.BuildPlayer(GetEnabledScenes(), fixedBuildPath, item, buildOptions);
 
-        Console.WriteLine(":: Done with build");
+            if (buildReport.summary.result != UnityEditor.Build.Reporting.BuildResult.Succeeded)
+                throw new Exception($"Build ended with {buildReport.summary.result} status");
+
+            Console.WriteLine(":: Done with build");
+        }        
     }
     /////////////////////////////////////////////////////////
 
@@ -48,6 +52,19 @@ static class BuildCommand {
 
         Console.WriteLine(
             $":: {IS_DEVELOPMENT_BUILD} env var detected, setting \"Development Build\" to {isDevelopmentBuild.ToString()}.");
+    }
+
+    static BuildTarget[] GetBuildTargets() {
+        string[] buildTargetNames = GetArguments("buildTarget");
+        BuildTarget[] buildTargets = new BuildTarget[0];
+        foreach (var item in buildTargetNames) {
+            Console.WriteLine(":: Received buildTarget " + item);
+            if (item.TryConvertToEnum(out BuildTarget target))
+                buildTargets.Append(target);
+            Console.WriteLine($":: {nameof(item)} \"{item}\" not defined on enum {nameof(BuildTarget)}, using {nameof(BuildTarget.NoTarget)} enum to build");
+        }
+
+        return buildTargets;
     }
 
     static BuildTarget GetBuildTarget() {
@@ -99,6 +116,16 @@ static class BuildCommand {
             }
         }
         return null;
+    }
+    static string[] GetArguments(string name) {
+        string[] args = Environment.GetCommandLineArgs();
+        string[] requiredArgs = new string[0];
+        for (int i = 0; i < args.Length; i++) {
+            if (args[i].Contains(name)) {
+                requiredArgs.Append(args[i + 1]);
+            }
+        }
+        return requiredArgs;
     }
 
     public static bool TryConvertToEnum<TEnum>(this string strEnumValue, out TEnum value) {
