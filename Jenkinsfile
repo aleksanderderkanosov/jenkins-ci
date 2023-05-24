@@ -2,7 +2,7 @@ pipeline {
 
     //Variable inputs that modify the behavior of the job
     parameters {
-        choice(name: 'buildTarget', choices: ['Android', 'StandaloneWindows'], description: "Choose the target platform.")
+        choice(name: 'buildTarget', choices: ['All', 'Android', 'StandaloneWindows'], description: "Choose the target platform.")
         string(name: 'gitBranch', defaultValue: 'master', description: 'Set the branch.')
         booleanParam(name: 'developmentBuild', defaultValue: true, description: 'Choose the buildType.')
     }
@@ -55,17 +55,37 @@ pipeline {
                 }
             }
         }
-        stage('Build Application') {
-            steps {
-                script {
-                    echo "create Application output folder..."
-                    bat 'cd %outputFolder% || mkdir %outputFolder%'
-
-                    echo "Buld App..."
-                    bat '%UNITY_EXECUTABLE% -projectPath %CD% -quit -batchmode -nographics -buildTarget Android -customBuildPath %CD%\\%outputFolder%\\ -customBuildName %BUILD_NAME% -executeMethod BuildCommand.PerformBuild'
-                    
-                    echo "Buld App..."
-                    bat '%UNITY_EXECUTABLE% -projectPath %CD% -quit -batchmode -nographics -buildTarget StandaloneWindows -customBuildPath %CD%\\%outputFolder%\\ -customBuildName %BUILD_NAME% -executeMethod BuildCommand.PerformBuild'
+        stage('Build') {
+            matrix {
+                when { 
+                    anyOf {
+                        expression { params.buildTarget == 'all' }
+                        expression { params.buildTarget == env.PLATFORM }
+                    } 
+                }
+                axes {
+                    axis {
+                        name 'PLATFORM'
+                        values 'Android', 'StandaloneWindows'
+                    }
+                }
+                stages {
+                    stage('Creating directory') {
+                        steps {
+                            script {
+                                echo "create Application output folder..."
+                                bat 'cd %outputFolder%\\%buildtarget% || mkdir %outputFolder%\\%buildtarget%'
+                            }
+                        }
+                    }
+                    stage('Build') {
+                        steps {
+                            script {
+                                echo "Do Build for ${PLATFORM}"
+                                bat '%UNITY_EXECUTABLE% -projectPath %CD% -quit -batchmode -nographics -buildTarget %PLATFORM% -customBuildPath %CD%\\%outputFolder%\\%buildtarget%\\ -customBuildName %BUILD_NAME% -executeMethod BuildCommand.PerformBuild'
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -73,7 +93,7 @@ pipeline {
     //Any action we want to perform after all the steps have succeeded or failed
     post {
         success {
-            echo "Success :)"
+            echo "Success!"
         }
         failure {
             echo "Failure!"

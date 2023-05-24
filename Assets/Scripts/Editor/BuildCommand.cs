@@ -12,7 +12,6 @@ static class BuildCommand {
 
         // Common for all Platforms
         var buildTarget = GetBuildTarget();
-        //var buildTargets = GetBuildTargets();
         var targetGroup = GetBuildTargetGroup(buildTarget);
 
         bool isDevelopmentBuild = IsDevelopmentType();
@@ -21,7 +20,7 @@ static class BuildCommand {
         var buildPath = GetBuildPath();
         var buildName = GetBuildName();
         var buildOptions = GetBuildOptions();
-        Console.WriteLine($":: ready to start build on {buildTarget}");
+        Console.WriteLine($":: Ready to start build on {buildTarget}.");
         var fixedBuildPath = GetFixedBuildPath(buildTarget, buildPath, buildName);
 
         var buildReport = BuildPipeline.BuildPlayer(GetEnabledScenes(), fixedBuildPath, buildTarget, buildOptions);
@@ -41,7 +40,7 @@ static class BuildCommand {
         }
 
         Console.WriteLine($":: {IS_DEVELOPMENT_BUILD} env var not detected");
-        throw new Exception($"{IS_DEVELOPMENT_BUILD}env var not detected");
+        throw new Exception($"{IS_DEVELOPMENT_BUILD} env var not detected");
     }
 
     private static void HandleDevelopmentType(bool isDevelopmentBuild) {
@@ -50,19 +49,6 @@ static class BuildCommand {
 
         Console.WriteLine(
             $":: {IS_DEVELOPMENT_BUILD} env var detected, setting \"Development Build\" to {isDevelopmentBuild.ToString()}.");
-    }
-
-    static BuildTarget[] GetBuildTargets() {
-        string[] buildTargetNames = GetArguments("buildTarget");
-        BuildTarget[] buildTargets = new BuildTarget[0];
-        foreach (var item in buildTargetNames) {
-            Console.WriteLine(":: Received buildTarget " + item);
-            if (item.TryConvertToEnum(out BuildTarget target))
-                buildTargets.Append(target);
-            Console.WriteLine($":: {nameof(item)} \"{item}\" not defined on enum {nameof(BuildTarget)}, using {nameof(BuildTarget.NoTarget)} enum to build");
-        }
-
-        return buildTargets;
     }
 
     static BuildTarget GetBuildTarget() {
@@ -114,19 +100,6 @@ static class BuildCommand {
             }
         }
         return null;
-    }
-    static string[] GetArguments(string name) {
-        string[] args = Environment.GetCommandLineArgs();
-        string[] requiredArgs = new string[0];
-        for (int i = 0; i < args.Length; i++) {
-            if (args[i].Contains(name)) {
-                requiredArgs.Append(args[i + 1]);
-            }
-        }
-        foreach (var item in requiredArgs) {
-            Console.WriteLine(":: Received buildTarget: " + item);
-        }
-        return requiredArgs;
     }
 
     public static bool TryConvertToEnum<TEnum>(this string strEnumValue, out TEnum value) {
