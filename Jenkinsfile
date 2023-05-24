@@ -59,7 +59,7 @@ pipeline {
             matrix {
                 when { 
                     anyOf {
-                        expression { params.buildTarget == 'all' }
+                        expression { params.buildTarget == 'All' }
                         expression { params.buildTarget == env.PLATFORM }
                     } 
                 }
@@ -74,7 +74,7 @@ pipeline {
                         steps {
                             script {
                                 echo "create Application output folder..."
-                                bat 'cd %outputFolder%\\%buildtarget% || mkdir %outputFolder%\\%buildtarget%'
+                                bat 'cd %outputFolder%\\%PLATFORM% || mkdir %outputFolder%\\%PLATFORM%'
                             }
                         }
                     }
@@ -82,7 +82,7 @@ pipeline {
                         steps {
                             script {
                                 echo "Do Build for ${PLATFORM}"
-                                bat '%UNITY_EXECUTABLE% -projectPath %CD% -quit -batchmode -nographics -buildTarget %PLATFORM% -customBuildPath %CD%\\%outputFolder%\\%buildtarget%\\ -customBuildName %BUILD_NAME% -executeMethod BuildCommand.PerformBuild'
+                                bat '%UNITY_EXECUTABLE% -projectPath %CD% -quit -batchmode -nographics -buildTarget %PLATFORM% -customBuildPath %CD%\\%outputFolder%\\%PLATFORM%\\ -customBuildName %BUILD_NAME% -executeMethod BuildCommand.PerformBuild'
                             }
                         }
                     }
