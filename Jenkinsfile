@@ -45,7 +45,7 @@ pipeline {
         stage('Git Pull') {
             agent any
             steps {
-                echo "Git pull repo"
+                echo "Git pull repo."
                 script {
                     try {
                         git url: "${gitUrl}", branch: "${gitBranch}"
