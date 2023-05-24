@@ -16,8 +16,6 @@ pipeline {
         // Unity tool installation
         UNITY_EXECUTABLE = "E:\\Unity\\Hub\\Editor\\2021.3.5f1\\Editor\\Unity.exe" // create system environment var pointing to unity install path
 
-        // Unity Build params
-        BUILD_NAME = "${appname}_${PLATFORM}_${currentBuild.number}"
         String outputFolder = "CurrentBuild"
 
         //PARAMETERS DATA
@@ -73,7 +71,7 @@ pipeline {
                     stage('Creating directory') {
                         steps {
                             script {
-                                echo "create Application output folder..."
+                                echo "Create Application output folder..."
                                 bat 'cd %outputFolder%\\%PLATFORM% || mkdir %outputFolder%\\%PLATFORM%'
                             }
                         }
@@ -81,6 +79,7 @@ pipeline {
                     stage('Build') {
                         steps {
                             script {
+                                BUILD_NAME = "${appname}_${PLATFORM}_${currentBuild.number}"
                                 echo "Do Build for ${PLATFORM}"
                                 bat '%UNITY_EXECUTABLE% -projectPath %CD% -quit -batchmode -nographics -buildTarget %PLATFORM% -customBuildPath %CD%\\%outputFolder%\\%PLATFORM%\\ -customBuildName %BUILD_NAME% -executeMethod BuildCommand.PerformBuild'
                             }
