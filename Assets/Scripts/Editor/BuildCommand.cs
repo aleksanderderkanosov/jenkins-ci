@@ -21,6 +21,7 @@ static class BuildCommand {
         var buildPath = GetBuildPath();
         var buildName = GetBuildName();
         var buildOptions = GetBuildOptions();
+        Console.WriteLine($":: ready to start...");
 
         foreach (var item in buildTargets) {
             Console.WriteLine($":: start build on {item}");
@@ -125,6 +126,9 @@ static class BuildCommand {
             if (args[i].Contains(name)) {
                 requiredArgs.Append(args[i + 1]);
             }
+        }
+        foreach (var item in requiredArgs) {
+            Console.WriteLine(":: Received buildTarget: " + item);
         }
         return requiredArgs;
     }
