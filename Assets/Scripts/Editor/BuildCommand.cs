@@ -11,9 +11,9 @@ static class BuildCommand {
         Console.WriteLine(":: Performing build");
 
         // Common for all Platforms
-        //var buildTarget = GetBuildTarget();
-        var buildTargets = GetBuildTargets();
-        //var targetGroup = GetBuildTargetGroup(buildTarget);
+        var buildTarget = GetBuildTarget();
+        //var buildTargets = GetBuildTargets();
+        var targetGroup = GetBuildTargetGroup(buildTarget);
 
         bool isDevelopmentBuild = IsDevelopmentType();
         HandleDevelopmentType(isDevelopmentBuild);
@@ -21,19 +21,15 @@ static class BuildCommand {
         var buildPath = GetBuildPath();
         var buildName = GetBuildName();
         var buildOptions = GetBuildOptions();
-        Console.WriteLine($":: ready to start...");
+        Console.WriteLine($":: ready to start build on {buildTarget}");
+        var fixedBuildPath = GetFixedBuildPath(buildTarget, buildPath, buildName);
 
-        foreach (var item in buildTargets) {
-            Console.WriteLine($":: start build on {item}");
-            var fixedBuildPath = GetFixedBuildPath(item, buildPath, buildName);
+        var buildReport = BuildPipeline.BuildPlayer(GetEnabledScenes(), fixedBuildPath, buildTarget, buildOptions);
 
-            var buildReport = BuildPipeline.BuildPlayer(GetEnabledScenes(), fixedBuildPath, item, buildOptions);
+        if (buildReport.summary.result != UnityEditor.Build.Reporting.BuildResult.Succeeded)
+            throw new Exception($"Build ended with {buildReport.summary.result} status");
 
-            if (buildReport.summary.result != UnityEditor.Build.Reporting.BuildResult.Succeeded)
-                throw new Exception($"Build ended with {buildReport.summary.result} status");
-
-            Console.WriteLine(":: Done with build");
-        }        
+        Console.WriteLine(":: Done with build");
     }
     /////////////////////////////////////////////////////////
 
