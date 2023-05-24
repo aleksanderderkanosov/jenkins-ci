@@ -23,6 +23,7 @@ static class BuildCommand {
         var buildOptions = GetBuildOptions();
 
         foreach (var item in buildTargets) {
+            Console.WriteLine($":: start build on {item}");
             var fixedBuildPath = GetFixedBuildPath(item, buildPath, buildName);
 
             var buildReport = BuildPipeline.BuildPlayer(GetEnabledScenes(), fixedBuildPath, item, buildOptions);
