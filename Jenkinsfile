@@ -43,8 +43,8 @@ pipeline {
     //The steps necessary to generate the desired build
     stages {
         stage('Git Pull') {
+            agent any
             steps {
-                agent any
                 echo "Git pull repo"
                 script {
                     try {
