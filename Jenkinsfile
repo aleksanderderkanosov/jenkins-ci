@@ -74,8 +74,7 @@ pipeline {
                         steps {
                             script {
                                 echo "Create Application output folder..."
-                                //bat 'cd %outputFolder%\\%PLATFORM% || mkdir %outputFolder%\\%PLATFORM%'
-                                bat 'cd %outputFolder% || mkdir %outputFolder%'
+                                bat 'cd %outputFolder%\\%PLATFORM% || mkdir %outputFolder%\\%PLATFORM%'
                             }
                         }
                     }
@@ -83,7 +82,7 @@ pipeline {
                         steps {
                             script {
                                 echo "Do Build for ${PLATFORM}"
-                                bat '%UNITY_EXECUTABLE% -projectPath %CD% -quit -batchmode -nographics -buildTarget %PLATFORM% -customBuildPath %CD%\\%outputFolder%\\ -customBuildName %BUILD_NAME% -executeMethod BuildCommand.PerformBuild'
+                                bat '%UNITY_EXECUTABLE% -projectPath %CD% -quit -batchmode -nographics -buildTarget %PLATFORM% -customBuildPath %CD%\\%outputFolder%\\%PLATFORM%\\ -customBuildName %BUILD_NAME% -executeMethod BuildCommand.PerformBuild'
                             }
                         }
                     }
