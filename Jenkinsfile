@@ -70,7 +70,7 @@ pipeline {
                     }
                 }
                 stages {
-                    stage("Creating directory for ${PLATFORM}") {
+                    stage('Creating directory') {
                         steps {
                             script {
                                 echo "Create Application output folder..."
