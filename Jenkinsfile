@@ -51,7 +51,7 @@ pipeline {
                 script {
                     try {
                         git url: "${gitUrl}", branch: "${gitBranch}"
-                        String commit_msg = sh (script: 'git log -1 --pretty=%B', returnStdout: true).trim()
+                        String commit_msg = sh(returnStdout: true, script: "git log -1 --pretty=%B").trim()
                         echo "Last commit: ${commit_msg}"
                     } catch (e) {
                         currentBuild.result = "FAILED"
