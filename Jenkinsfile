@@ -23,6 +23,8 @@ pipeline {
         //PARAMETERS DATA
         IS_DEVELOPMENT_BUILD = "${params.developmentBuild}"
 
+        LAST_COMMIT = sh(returnStdout: true, script: "git log -1 --pretty=%B").trim()
+
         // Add other EnvVars here
     }
 
@@ -49,6 +51,7 @@ pipeline {
                 script {
                     try {
                         git url: "${gitUrl}", branch: "${gitBranch}"
+                        echo "$LAST_COMMIT"
                     } catch (e) {
                         currentBuild.result = "FAILED"
                         echo "JOB FAILED: The selected branch does not exists."
