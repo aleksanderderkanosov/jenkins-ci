@@ -23,7 +23,7 @@ pipeline {
         //PARAMETERS DATA
         IS_DEVELOPMENT_BUILD = "${params.developmentBuild}"
 
-        //GIT_COMMIT_MSG = "Last message"
+        RELEASE_NOTES = sh (script: """git log --format="medium" -1 ${GIT_COMMIT}""", returnStdout:true)
 
         // Add other EnvVars here
     }
@@ -51,12 +51,11 @@ pipeline {
                 script {
                     try {
                         git url: "${gitUrl}", branch: "${gitBranch}"
-                        String commit_msg = sh(returnStdout: true, script: "git log -1 --pretty=%B").trim()
-                        echo "Last commit: ${commit_msg}"
                     } catch (e) {
                         currentBuild.result = "FAILED"
                         echo "JOB FAILED: The selected branch does not exists."
                     }
+                    echo "Last commit: ${RELEASE_NOTES}"
                 }
             }
         }
