@@ -92,6 +92,18 @@ pipeline {
                 }
             }
         }
+
+        stage('Test') {
+            agent any
+            when {
+                expression { IS_COMMIT_HAVE_PARAMETERS == false }
+            }
+            steps {
+                script {
+                    echo "IS_COMMIT_HAVE_PARAMETERS: ${IS_COMMIT_HAVE_PARAMETERS}"
+                }
+            }
+        }
         stage('Build') {
             matrix {
                 agent {
