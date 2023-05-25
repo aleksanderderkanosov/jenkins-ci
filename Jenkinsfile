@@ -23,6 +23,7 @@ pipeline {
         //PARAMETERS DATA
         IS_DEVELOPMENT_BUILD = "${params.developmentBuild}"
         def IS_COMMIT_HAVE_PARAMETERS = false
+        def BUILD_PLATFORM = "All"
 
         // Add other EnvVars here
     }
@@ -58,16 +59,23 @@ pipeline {
             }
         }
         stage('AndroidBuild') {
+            BUILD_PLATFORM = "Android"
             agent {
                 label "Android-agent"
             }
             when {
-                changelog ".*Android.*"
+                anyOf {
+                    expression { params.buildTarget == 'Android' }
+                    changelog ".*Android.*"
+                }
             }
             steps {
                 script {
+                    echo "Create Application output folder..."
+                    //bat 'cd %outputFolder%\\%PLATFORM% || mkdir %outputFolder%\\%PLATFORM%'
+                    //bat '%UNITY_EXECUTABLE% -projectPath %CD% -quit -batchmode -nographics -buildTarget Android -customBuildPath %CD%\\%outputFolder%\\%PLATFORM%\\ -customBuildName %BUILD_NAME% -executeMethod BuildCommand.PerformBuild'
                     IS_COMMIT_HAVE_PARAMETERS = true
-                    echo "IS_COMMIT_HAVE_PARAMETERS: ${IS_COMMIT_HAVE_PARAMETERS}"
+                    echo "BUILD_PLATFORM: ${BUILD_PLATFORM}"
                 }
             }
         }
