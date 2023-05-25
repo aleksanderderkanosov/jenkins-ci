@@ -93,17 +93,6 @@ pipeline {
             }
         }
 
-        // stage('Test') {
-        //     agent any
-        //     when {
-        //         expression { IS_COMMIT_HAVE_PARAMETERS != true }
-        //     }
-        //     steps {
-        //         script {
-        //             echo "IS_COMMIT_HAVE_PARAMETERS: ${IS_COMMIT_HAVE_PARAMETERS}"
-        //         }
-        //     }
-        // }
         stage('Build') {
             matrix {
                 agent {
@@ -112,7 +101,7 @@ pipeline {
                 when {
                     expression { IS_COMMIT_HAVE_PARAMETERS != true }
                     anyOf {
-                        //changelog ".*All.*"
+                        changelog ".*All.*"
                         expression { params.buildTarget == 'All' }
                         expression { params.buildTarget == env.PLATFORM }
                     } 
