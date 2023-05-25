@@ -62,7 +62,7 @@ pipeline {
             steps {
                 script {
                     BUILD_PLATFORM = "Android"
-                    OUTPUT_FOLDER = OUTPUT_FOLDER + "${BUILD_PLATFORM}"
+                    OUTPUT_FOLDER = env.OUTPUT_FOLDER + "\\${BUILD_PLATFORM}"
                     echo "OUTPUT_FOLDER: ${OUTPUT_FOLDER}"
                     //echo "Create Application output folder..."
                     //bat "cd %OUTPUT_FOLDER%\\${BUILD_PLATFORM}\\${} || mkdir %OUTPUT_FOLDER%\\${BUILD_PLATFORM}"
@@ -80,7 +80,7 @@ pipeline {
             steps {
                 script {
                     BUILD_PLATFORM = "StandaloneWindows"
-                    OUTPUT_FOLDER = OUTPUT_FOLDER + "${BUILD_PLATFORM}"
+                    OUTPUT_FOLDER = env.OUTPUT_FOLDER + "\\${BUILD_PLATFORM}"
                     echo "OUTPUT_FOLDER: ${OUTPUT_FOLDER}"
                     //bat "cd %OUTPUT_FOLDER%\\${BUILD_PLATFORM} || mkdir %OUTPUT_FOLDER%\\${BUILD_PLATFORM}"
                     //bat "%UNITY_EXECUTABLE% -projectPath %CD% -quit -batchmode -nographics -buildTarget ${BUILD_PLATFORM} -customBuildPath %CD%\\%OUTPUT_FOLDER%\\${BUILD_PLATFORM}\\ -customBuildName %BUILD_NAME% -executeMethod BuildCommand.PerformBuild"
