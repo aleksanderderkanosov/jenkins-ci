@@ -62,7 +62,7 @@ pipeline {
             agent any
             steps {
                 script {
-                    env.GIT_COMMIT_MSG = sh (script: 'git log -1 --pretty=%B ${GIT_COMMIT}', returnStdout: true).trim()
+                    env.GIT_COMMIT_MSG = sh (script: 'git log -1 --pretty=%B', returnStdout: true).trim()
                     echo "Last commit: ${GIT_COMMIT_MSG}"
                 }
             }
