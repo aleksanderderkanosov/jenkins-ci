@@ -51,12 +51,21 @@ pipeline {
                 }
             }
         }
-        stage('Test') {
+        stage('Build') {
             steps {
                 script {
                     platforms = ['Android', 'StandaloneWindows']
                     platforms.each { platform ->
-                        echo "Hello ${platform}"
+                        when {
+                            anyOf {
+                                expression { params.buildTarget == 'All' }
+                                expression { params.buildTarget == platform }
+                            }
+                        }
+                        OUTPUT_FOLDER = env.OUTPUT_FOLDER + "\\${platform}"
+                        echo "OUTPUT_FOLDER: ${OUTPUT_FOLDER}"
+                        //bat "cd ${OUTPUT_FOLDER} || mkdir ${OUTPUT_FOLDER}"
+                        //bat "%UNITY_EXECUTABLE% -projectPath %CD% -quit -batchmode -nographics -buildTarget ${platform} -customBuildPath %CD%\\${OUTPUT_FOLDER}\\ -customBuildName ${BUILD_NAME} -executeMethod BuildCommand.PerformBuild"
                     }
                 }
             }
