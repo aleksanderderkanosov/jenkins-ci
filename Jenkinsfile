@@ -43,6 +43,7 @@ pipeline {
     }*/
     //The steps necessary to generate the desired build
     stages {
+        def IS_COMMIT_HAVE_PARAMETERS = false
         stage('Git Pull') {
             agent any
             steps {
@@ -57,7 +58,23 @@ pipeline {
                 }
             }
         }
+        stage('AndroidBuild') {
+            agent {
+                label "Android-agent"
+            }
+            when {
+                changelog ".*Android.*"
+            }
+            steps {
+                script {
+                    IS_COMMIT_HAVE_PARAMETERS = true
+                    echo "IS_COMMIT_HAVE_PARAMETERS: ${IS_COMMIT_HAVE_PARAMETERS}"
+                }
+            }
+        }
         stage('Build') {
+            //def COMMIT_MSG = bat (script: "git log -1 --pretty=%%B", returnStdout: true).trim().readLines().drop(1).join(" ")
+            //echo "Last commit: ${COMMIT_MSG}"
             matrix {
                 agent {
                     label "${PLATFORM}-agent"
@@ -79,8 +96,6 @@ pipeline {
                         steps {
                             script {
                                 echo "Create Application output folder..."
-                                def COMMIT_MSG = bat (script: "git log -1 --pretty=%%B", returnStdout: true).trim().readLines().drop(1).join(" ")
-                                echo "Last commit: ${COMMIT_MSG}"
                                 bat 'cd %outputFolder%\\%PLATFORM% || mkdir %outputFolder%\\%PLATFORM%'
                             }
                         }
