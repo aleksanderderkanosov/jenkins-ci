@@ -53,9 +53,11 @@ pipeline {
         }
         stage('Android Build') {
             when {
-                changelog ".*Android.*"
-                expression { params.buildTarget == 'All' }
-                expression { params.buildTarget == 'Android' }
+                anyOf {
+                    changelog ".*Android.*"
+                    expression { params.buildTarget == 'All' }
+                    expression { params.buildTarget == 'Android' }
+                }
             }
             steps {
                 script {
@@ -63,15 +65,17 @@ pipeline {
                     echo "Create Application output folder..."
                     bat 'cd %outputFolder%\\%PLATFORM% || mkdir %outputFolder%\\%PLATFORM%'
                     bat '%UNITY_EXECUTABLE% -projectPath %CD% -quit -batchmode -nographics -buildTarget %PLATFORM% -customBuildPath %CD%\\%outputFolder%\\%PLATFORM%\\ -customBuildName %BUILD_NAME% -executeMethod BuildCommand.PerformBuild'
-                    IS_COMMIT_HAVE_PARAMETERS = true
+                    //IS_COMMIT_HAVE_PARAMETERS = true
                 }
             }
         }
         stage('Windows Build') {
             when {
-                changelog ".*Win.*"
-                expression { params.buildTarget == 'All' }
-                expression { params.buildTarget == 'StandaloneWindows' }
+                anyOf {
+                    changelog ".*Win.*"
+                    expression { params.buildTarget == 'All' }
+                    expression { params.buildTarget == 'StandaloneWindows' }
+                }
             }
             steps {
                 script {
@@ -79,7 +83,7 @@ pipeline {
                     echo "Create Application output folder..."
                     bat 'cd %outputFolder%\\%PLATFORM% || mkdir %outputFolder%\\%PLATFORM%'
                     bat '%UNITY_EXECUTABLE% -projectPath %CD% -quit -batchmode -nographics -buildTarget %PLATFORM% -customBuildPath %CD%\\%outputFolder%\\%PLATFORM%\\ -customBuildName %BUILD_NAME% -executeMethod BuildCommand.PerformBuild'
-                    IS_COMMIT_HAVE_PARAMETERS = true
+                    //IS_COMMIT_HAVE_PARAMETERS = true
                 }
             }
         }
