@@ -52,9 +52,13 @@ pipeline {
             }
         }
         stage('Test') {
-            platforms = ['Android', 'StandaloneWindows']
-            platforms.each { platform ->
-                echo "Hello ${platform}"
+            steps {
+                script {
+                    platforms = ['Android', 'StandaloneWindows']
+                    platforms.each { platform ->
+                        echo "Hello ${platform}"
+                    }
+                }
             }
         }
         // stage('Android Build') {
