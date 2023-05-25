@@ -22,7 +22,7 @@ pipeline {
 
         //PARAMETERS DATA
         IS_DEVELOPMENT_BUILD = "${params.developmentBuild}"
-        COMMIT_MSG = "Last commit"
+        //COMMIT_MSG = "Last commit"
 
         // Add other EnvVars here
     }
@@ -54,7 +54,7 @@ pipeline {
                         currentBuild.result = "FAILED"
                         echo "JOB FAILED: The selected branch does not exists."
                     }
-                    env.COMMIT_MSG = bat 'git log -1 --pretty=%%B'
+                    def COMMIT_MSG = bat 'git log -1 --pretty=%%B'
                     echo "Last commit: ${COMMIT_MSG}"
                 }
             }
