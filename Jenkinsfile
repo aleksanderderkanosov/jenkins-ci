@@ -22,8 +22,7 @@ pipeline {
 
         //PARAMETERS DATA
         IS_DEVELOPMENT_BUILD = "${params.developmentBuild}"
-
-        //RELEASE_NOTES = sh (script: """cd C:\\Users\\Admin\\AppData\\Local\\Jenkins\\.jenkins && git log --format="medium" -1 ${GIT_COMMIT}""", returnStdout:true)
+        COMMIT_MSG = "Last commit"
 
         // Add other EnvVars here
     }
@@ -55,8 +54,8 @@ pipeline {
                         currentBuild.result = "FAILED"
                         echo "JOB FAILED: The selected branch does not exists."
                     }
-                    String commit_msg = bat 'git log -1 --pretty=%%B'
-                    echo "Last commit: ${commit_msg}"
+                    env.COMMIT_MSG = bat 'git log -1 --pretty=%%B'
+                    echo "Last commit: ${COMMIT_MSG}"
                 }
             }
         }
