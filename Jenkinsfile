@@ -61,12 +61,11 @@ pipeline {
             }
             steps {
                 script {
-                    def PLATFORM = "Android"
-                    echo "Platform: ${PLATFORM}"
-                    echo "Platform: %PLATFORM%"
-                    //echo "Create Application output folder..."
-                    //bat 'cd %outputFolder%\\%PLATFORM% || mkdir %outputFolder%\\%PLATFORM%'
-                    //bat '%UNITY_EXECUTABLE% -projectPath %CD% -quit -batchmode -nographics -buildTarget %PLATFORM% -customBuildPath %CD%\\%outputFolder%\\%PLATFORM%\\ -customBuildName %BUILD_NAME% -executeMethod BuildCommand.PerformBuild'
+                    String PLATFORM = "Android"
+                    echo "PLATFORM: ${PLATFORM}"
+                    echo "Create Application output folder..."
+                    bat 'cd %outputFolder%\\%PLATFORM% || mkdir %outputFolder%\\%PLATFORM%'
+                    bat '%UNITY_EXECUTABLE% -projectPath %CD% -quit -batchmode -nographics -buildTarget %PLATFORM% -customBuildPath %CD%\\%outputFolder%\\%PLATFORM%\\ -customBuildName %BUILD_NAME% -executeMethod BuildCommand.PerformBuild'
                 }
             }
         }
@@ -80,11 +79,10 @@ pipeline {
             }
             steps {
                 script {
-                    def PLATFORM = "StandaloneWindows"
-                    echo "Platform: ${PLATFORM}"
-                    //echo "Create Application output folder..."
-                    //bat 'cd %outputFolder%\\%PLATFORM% || mkdir %outputFolder%\\%PLATFORM%'
-                    //bat '%UNITY_EXECUTABLE% -projectPath %CD% -quit -batchmode -nographics -buildTarget %PLATFORM% -customBuildPath %CD%\\%outputFolder%\\%PLATFORM%\\ -customBuildName %BUILD_NAME% -executeMethod BuildCommand.PerformBuild'
+                    String PLATFORM = "StandaloneWindows"
+                    echo "Create Application output folder..."
+                    bat 'cd %outputFolder%\\%PLATFORM% || mkdir %outputFolder%\\%PLATFORM%'
+                    bat '%UNITY_EXECUTABLE% -projectPath %CD% -quit -batchmode -nographics -buildTarget %PLATFORM% -customBuildPath %CD%\\%outputFolder%\\%PLATFORM%\\ -customBuildName %BUILD_NAME% -executeMethod BuildCommand.PerformBuild'
                 }
             }
         }
