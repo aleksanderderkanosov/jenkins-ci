@@ -22,7 +22,6 @@ pipeline {
 
         //PARAMETERS DATA
         IS_DEVELOPMENT_BUILD = "${params.developmentBuild}"
-        def IS_COMMIT_HAVE_PARAMETERS = false
         def BUILD_PLATFORM = "All"
     }
 
@@ -32,17 +31,14 @@ pipeline {
         buildDiscarder(logRotator(numToKeepStr: "10"))
     }
 
-    agent none
-    /*agent {
+    agent {
         node {
-            // Jenkins node to be used must have the label android
-            label "android"
+            label "Master-build-agent"
         }
-    }*/
+    }
     //The steps necessary to generate the desired build
     stages {
         stage('Git Pull') {
-            agent any
             steps {
                 echo "Git pull repo."
                 script {
@@ -56,41 +52,39 @@ pipeline {
             }
         }
         stage('Android Build') {
-            agent {
-                label "Android-agent"
-            }
             when {
                 changelog ".*Android.*"
+                expression { params.buildTarget == 'All' }
+                expression { params.buildTarget == 'Android' }
             }
             steps {
                 script {
-                    echo "Build for Android from commit message"
+                    String PLATFORM = "Android"
                     echo "Create Application output folder..."
                     bat 'cd %outputFolder%\\%PLATFORM% || mkdir %outputFolder%\\%PLATFORM%'
-                    bat '%UNITY_EXECUTABLE% -projectPath %CD% -quit -batchmode -nographics -buildTarget Android -customBuildPath %CD%\\%outputFolder%\\%PLATFORM%\\ -customBuildName %BUILD_NAME% -executeMethod BuildCommand.PerformBuild'
+                    bat '%UNITY_EXECUTABLE% -projectPath %CD% -quit -batchmode -nographics -buildTarget %PLATFORM% -customBuildPath %CD%\\%outputFolder%\\%PLATFORM%\\ -customBuildName %BUILD_NAME% -executeMethod BuildCommand.PerformBuild'
                     IS_COMMIT_HAVE_PARAMETERS = true
                 }
             }
         }
         stage('Windows Build') {
-            agent {
-                label "StandaloneWindows-agent"
-            }
             when {
                 changelog ".*Win.*"
+                expression { params.buildTarget == 'All' }
+                expression { params.buildTarget == 'StandaloneWindows' }
             }
             steps {
                 script {
-                    echo "Build for StandaloneWindows from commit message"
+                    String PLATFORM = "StandaloneWindows"
                     echo "Create Application output folder..."
                     bat 'cd %outputFolder%\\%PLATFORM% || mkdir %outputFolder%\\%PLATFORM%'
-                    bat '%UNITY_EXECUTABLE% -projectPath %CD% -quit -batchmode -nographics -buildTarget StandaloneWindows -customBuildPath %CD%\\%outputFolder%\\%PLATFORM%\\ -customBuildName %BUILD_NAME% -executeMethod BuildCommand.PerformBuild'
+                    bat '%UNITY_EXECUTABLE% -projectPath %CD% -quit -batchmode -nographics -buildTarget %PLATFORM% -customBuildPath %CD%\\%outputFolder%\\%PLATFORM%\\ -customBuildName %BUILD_NAME% -executeMethod BuildCommand.PerformBuild'
                     IS_COMMIT_HAVE_PARAMETERS = true
                 }
             }
         }
 
-        stage('Build') {
+        /*stage('Build') {
             matrix {
                 agent {
                     label "${PLATFORM}-agent"
@@ -128,7 +122,7 @@ pipeline {
                     }
                 }
             }
-        }
+        }*/
     }
     //Any action we want to perform after all the steps have succeeded or failed
     post {
