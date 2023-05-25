@@ -22,7 +22,7 @@ pipeline {
 
         //PARAMETERS DATA
         IS_DEVELOPMENT_BUILD = "${params.developmentBuild}"
-        //COMMIT_MSG = "Last commit"
+        def IS_COMMIT_HAVE_PARAMETERS = false
 
         // Add other EnvVars here
     }
@@ -43,7 +43,6 @@ pipeline {
     }*/
     //The steps necessary to generate the desired build
     stages {
-        def IS_COMMIT_HAVE_PARAMETERS = false
         stage('Git Pull') {
             agent any
             steps {
