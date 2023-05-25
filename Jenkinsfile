@@ -19,7 +19,6 @@ pipeline {
         // Unity Build params
         BUILD_NAME = "${appname}_${currentBuild.number}"
         OUTPUT_FOLDER = "Builds\\CurrentBuild-${currentBuild.number}"
-        def BUILD_PLATFORM = "All"
 
         //PARAMETERS DATA
         IS_DEVELOPMENT_BUILD = "${params.developmentBuild}"
@@ -38,19 +37,19 @@ pipeline {
     }
     //The steps necessary to generate the desired build
     stages {
-        stage('Git Pull') {
-            steps {
-                echo "Git pull repo."
-                script {
-                    try {
-                        git url: "${gitUrl}", branch: "${gitBranch}"
-                    } catch (e) {
-                        currentBuild.result = "FAILED"
-                        echo "JOB FAILED: The selected branch does not exists."
-                    }
-                }
-            }
-        }
+        // stage('Git Pull') {
+        //     steps {
+        //         echo "Git pull repo."
+        //         script {
+        //             try {
+        //                 git url: "${gitUrl}", branch: "${gitBranch}"
+        //             } catch (e) {
+        //                 currentBuild.result = "FAILED"
+        //                 echo "JOB FAILED: The selected branch does not exists."
+        //             }
+        //         }
+        //     }
+        // }
         stage('Build') {
             steps {
                 script {
@@ -66,41 +65,6 @@ pipeline {
                 }
             }
         }
-        // stage('Android Build') {
-        //     when {
-        //         anyOf {
-        //             //changelog ".*Android.*"
-        //             expression { params.buildTarget == 'All' }
-        //             expression { params.buildTarget == 'Android' }
-        //         }
-        //     }
-        //     steps {
-        //         script {
-        //             BUILD_PLATFORM = "Android"
-        //             OUTPUT_FOLDER = env.OUTPUT_FOLDER + "\\${BUILD_PLATFORM}"
-        //             echo "OUTPUT_FOLDER: ${OUTPUT_FOLDER}"
-        //             bat "cd ${OUTPUT_FOLDER} || mkdir ${OUTPUT_FOLDER}"
-        //             bat "%UNITY_EXECUTABLE% -projectPath %CD% -quit -batchmode -nographics -buildTarget ${BUILD_PLATFORM} -customBuildPath %CD%\\${OUTPUT_FOLDER}\\ -customBuildName ${BUILD_NAME} -executeMethod BuildCommand.PerformBuild"
-        //         }
-        //     }
-        // }
-        // stage('Windows Build') {
-        //     when {
-        //         anyOf {
-        //             expression { params.buildTarget == 'All' }
-        //             expression { params.buildTarget == 'StandaloneWindows' }
-        //         }
-        //     }
-        //     steps {
-        //         script {
-        //             BUILD_PLATFORM = "StandaloneWindows"
-        //             OUTPUT_FOLDER = env.OUTPUT_FOLDER + "\\${BUILD_PLATFORM}"
-        //             echo "OUTPUT_FOLDER: ${OUTPUT_FOLDER}"
-        //             bat "cd ${OUTPUT_FOLDER} || mkdir ${OUTPUT_FOLDER}"
-        //             bat "${UNITY_EXECUTABLE} -projectPath %CD% -quit -batchmode -nographics -buildTarget ${BUILD_PLATFORM} -customBuildPath %CD%\\${OUTPUT_FOLDER}\\ -customBuildName ${BUILD_NAME} -executeMethod BuildCommand.PerformBuild"
-        //         }
-        //     }
-        // }
 
         // stage('Build') {
         //     matrix {
@@ -144,21 +108,4 @@ pipeline {
         }
     }
 }
-
-// def PerformBuild(params, build_platform, output_folder, build_name, unity_exe) {
-//     when {
-//         anyOf {
-//                 expression { params.buildTarget == 'All' }
-//                 expression { params.buildTarget == platform }
-//             }
-//         }
-//     steps {
-//         script {
-//             output_folder = output_folder + "\\${build_platform}"
-//             echo "OUTPUT_FOLDER: ${output_folder}"
-//             bat "cd ${output_folder} || mkdir ${output_folder}"
-//             bat "${unity_exe} -projectPath %CD% -quit -batchmode -nographics -buildTarget ${build_platform} -customBuildPath %CD%\\${output_folder}\\ -customBuildName ${build_name} -executeMethod BuildCommand.PerformBuild"
-//         }
-//     }
-// }
 
