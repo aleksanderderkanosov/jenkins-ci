@@ -58,36 +58,51 @@ pipeline {
                 }
             }
         }
-        stage('AndroidBuild') {
-            BUILD_PLATFORM = "Android"
+        stage('Android Build') {
             agent {
                 label "Android-agent"
             }
             when {
-                anyOf {
-                    expression { params.buildTarget == 'Android' }
-                    changelog ".*Android.*"
-                }
+                changelog ".*Android.*"
             }
             steps {
                 script {
+                    echo "Build for Android from commit message"
                     echo "Create Application output folder..."
-                    //bat 'cd %outputFolder%\\%PLATFORM% || mkdir %outputFolder%\\%PLATFORM%'
-                    //bat '%UNITY_EXECUTABLE% -projectPath %CD% -quit -batchmode -nographics -buildTarget Android -customBuildPath %CD%\\%outputFolder%\\%PLATFORM%\\ -customBuildName %BUILD_NAME% -executeMethod BuildCommand.PerformBuild'
+                    bat 'cd %outputFolder%\\%PLATFORM% || mkdir %outputFolder%\\%PLATFORM%'
+                    bat '%UNITY_EXECUTABLE% -projectPath %CD% -quit -batchmode -nographics -buildTarget Android -customBuildPath %CD%\\%outputFolder%\\%PLATFORM%\\ -customBuildName %BUILD_NAME% -executeMethod BuildCommand.PerformBuild'
                     IS_COMMIT_HAVE_PARAMETERS = true
-                    echo "BUILD_PLATFORM: ${BUILD_PLATFORM}"
+                }
+            }
+        }
+        stage('Windows Build') {
+            agent {
+                label "StandaloneWindows-agent"
+            }
+            when {
+                changelog ".*Win.*"
+            }
+            steps {
+                script {
+                    echo "Build for StandaloneWindows from commit message"
+                    echo "Create Application output folder..."
+                    bat 'cd %outputFolder%\\%PLATFORM% || mkdir %outputFolder%\\%PLATFORM%'
+                    bat '%UNITY_EXECUTABLE% -projectPath %CD% -quit -batchmode -nographics -buildTarget StandaloneWindows -customBuildPath %CD%\\%outputFolder%\\%PLATFORM%\\ -customBuildName %BUILD_NAME% -executeMethod BuildCommand.PerformBuild'
+                    IS_COMMIT_HAVE_PARAMETERS = true
                 }
             }
         }
         stage('Build') {
-            //def COMMIT_MSG = bat (script: "git log -1 --pretty=%%B", returnStdout: true).trim().readLines().drop(1).join(" ")
-            //echo "Last commit: ${COMMIT_MSG}"
             matrix {
                 agent {
                     label "${PLATFORM}-agent"
                 }
-                when { 
+                when {
+                    not {
+                        IS_COMMIT_HAVE_PARAMETERS
+                    }
                     anyOf {
+                        changelog ".*All.*"
                         expression { params.buildTarget == 'All' }
                         expression { params.buildTarget == env.PLATFORM }
                     } 
