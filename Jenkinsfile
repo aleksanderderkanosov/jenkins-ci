@@ -98,11 +98,9 @@ pipeline {
                     label "${PLATFORM}-agent"
                 }
                 when {
-                    not {
-                        expression { return IS_COMMIT_HAVE_PARAMETERS }
-                    }
+                    expression { IS_COMMIT_HAVE_PARAMETERS == false }
                     anyOf {
-                        changelog ".*All.*"
+                        //changelog ".*All.*"
                         expression { params.buildTarget == 'All' }
                         expression { params.buildTarget == env.PLATFORM }
                     } 
