@@ -23,7 +23,7 @@ pipeline {
         //PARAMETERS DATA
         IS_DEVELOPMENT_BUILD = "${params.developmentBuild}"
 
-        RELEASE_NOTES = sh (script: """git log --format="medium" -1 ${GIT_COMMIT}""", returnStdout:true)
+        //RELEASE_NOTES = sh (script: """cd C:\\Users\\Admin\\AppData\\Local\\Jenkins\\.jenkins && git log --format="medium" -1 ${GIT_COMMIT}""", returnStdout:true)
 
         // Add other EnvVars here
     }
@@ -35,7 +35,7 @@ pipeline {
     }
 
     //Tag Selector of the agent that will run the build job
-    agent any
+    agent none
     /*agent {
         node {
             // Jenkins node to be used must have the label android
@@ -55,7 +55,7 @@ pipeline {
                         currentBuild.result = "FAILED"
                         echo "JOB FAILED: The selected branch does not exists."
                     }
-                    echo "Last commit: ${RELEASE_NOTES}"
+                    echo "Last commit: ${GIT_COMMIT}"
                 }
             }
         }
