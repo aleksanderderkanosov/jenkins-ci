@@ -51,7 +51,7 @@ pipeline {
                 script {
                     try {
                         git url: "${gitUrl}", branch: "${gitBranch}"
-                        echo "$LAST_COMMIT"
+                        echo "Last commit: $LAST_COMMIT"
                     } catch (e) {
                         currentBuild.result = "FAILED"
                         echo "JOB FAILED: The selected branch does not exists."
