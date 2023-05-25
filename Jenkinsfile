@@ -61,7 +61,7 @@ pipeline {
             }
             steps {
                 script {
-                    String PLATFORM = "Android"
+                    def PLATFORM = "Android"
                     echo "Create Application output folder..."
                     bat 'cd %outputFolder%\\%PLATFORM% || mkdir %outputFolder%\\%PLATFORM%'
                     bat '%UNITY_EXECUTABLE% -projectPath %CD% -quit -batchmode -nographics -buildTarget %PLATFORM% -customBuildPath %CD%\\%outputFolder%\\%PLATFORM%\\ -customBuildName %BUILD_NAME% -executeMethod BuildCommand.PerformBuild'
@@ -79,7 +79,7 @@ pipeline {
             }
             steps {
                 script {
-                    String PLATFORM = "StandaloneWindows"
+                    def PLATFORM = "StandaloneWindows"
                     echo "Create Application output folder..."
                     bat 'cd %outputFolder%\\%PLATFORM% || mkdir %outputFolder%\\%PLATFORM%'
                     bat '%UNITY_EXECUTABLE% -projectPath %CD% -quit -batchmode -nographics -buildTarget %PLATFORM% -customBuildPath %CD%\\%outputFolder%\\%PLATFORM%\\ -customBuildName %BUILD_NAME% -executeMethod BuildCommand.PerformBuild'
