@@ -65,7 +65,7 @@ pipeline {
                     echo "PLATFORM: ${PLATFORM}"
                     echo "Create Application output folder..."
                     bat "cd %outputFolder%\\${PLATFORM} || mkdir %outputFolder%\\${PLATFORM}"
-                    //bat '%UNITY_EXECUTABLE% -projectPath %CD% -quit -batchmode -nographics -buildTarget %PLATFORM% -customBuildPath %CD%\\%outputFolder%\\%PLATFORM%\\ -customBuildName %BUILD_NAME% -executeMethod BuildCommand.PerformBuild'
+                    bat "%UNITY_EXECUTABLE% -projectPath %CD% -quit -batchmode -nographics -buildTarget ${PLATFORM} -customBuildPath %CD%\\%outputFolder%\\${PLATFORM}\\ -customBuildName %BUILD_NAME% -executeMethod BuildCommand.PerformBuild"
                 }
             }
         }
