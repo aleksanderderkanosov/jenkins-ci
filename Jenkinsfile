@@ -35,7 +35,7 @@ pipeline {
     }
 
     //Tag Selector of the agent that will run the build job
-    agent none
+    agent any
     /*agent {
         node {
             // Jenkins node to be used must have the label android
