@@ -54,7 +54,7 @@ pipeline {
                         currentBuild.result = "FAILED"
                         echo "JOB FAILED: The selected branch does not exists."
                     }
-                    def COMMIT_MSG = bat (script: "git log -1 --pretty=%%B", returnStdout: true).trim()
+                    def COMMIT_MSG = bat (script: "git log -1 --pretty=%%B", returnStdout: true).trim().readLines().drop(1).join(" ")
                     echo "Last commit: ${COMMIT_MSG}"
                 }
             }
