@@ -18,8 +18,8 @@ pipeline {
 
         // Unity Build params
         BUILD_NAME = "${appname}_${currentBuild.number}"
-        String outputFolder = "CurrentBuild"
-        def PLATFORM = "All"
+        String outputFolder = "Builds\\CurrentBuild-${currentBuild.number}"
+        def BUILD_PLATFORM = "All"
 
         //PARAMETERS DATA
         IS_DEVELOPMENT_BUILD = "${params.developmentBuild}"
@@ -54,79 +54,68 @@ pipeline {
         stage('Android Build') {
             when {
                 anyOf {
-                    changelog ".*Android.*"
+                    //changelog ".*Android.*"
                     expression { params.buildTarget == 'All' }
                     expression { params.buildTarget == 'Android' }
                 }
             }
             steps {
                 script {
-                    PLATFORM = "Android"
-                    echo "PLATFORM: ${PLATFORM}"
+                    BUILD_PLATFORM = "Android"
                     echo "Create Application output folder..."
-                    bat "cd %outputFolder%\\${PLATFORM} || mkdir %outputFolder%\\${PLATFORM}"
-                    bat "%UNITY_EXECUTABLE% -projectPath %CD% -quit -batchmode -nographics -buildTarget ${PLATFORM} -customBuildPath %CD%\\%outputFolder%\\${PLATFORM}\\ -customBuildName %BUILD_NAME% -executeMethod BuildCommand.PerformBuild"
+                    bat "cd %outputFolder%\\${BUILD_PLATFORM}\\${} || mkdir %outputFolder%\\${BUILD_PLATFORM}"
+                    bat "%UNITY_EXECUTABLE% -projectPath %CD% -quit -batchmode -nographics -buildTarget ${BUILD_PLATFORM} -customBuildPath %CD%\\%outputFolder%\\${BUILD_PLATFORM}\\ -customBuildName %BUILD_NAME% -executeMethod BuildCommand.PerformBuild"
                 }
             }
         }
         stage('Windows Build') {
             when {
                 anyOf {
-                    changelog ".*Win.*"
                     expression { params.buildTarget == 'All' }
                     expression { params.buildTarget == 'StandaloneWindows' }
                 }
             }
             steps {
                 script {
-                    PLATFORM = "StandaloneWindows"
-                    echo "PLATFORM: ${PLATFORM}"
+                    BUILD_PLATFORM = "StandaloneWindows"
                     echo "Create Application output folder..."
-                    bat "cd %outputFolder%\\${PLATFORM} || mkdir %outputFolder%\\${PLATFORM}"
-                    bat "%UNITY_EXECUTABLE% -projectPath %CD% -quit -batchmode -nographics -buildTarget ${PLATFORM} -customBuildPath %CD%\\%outputFolder%\\${PLATFORM}\\ -customBuildName %BUILD_NAME% -executeMethod BuildCommand.PerformBuild"
+                    bat "cd %outputFolder%\\${BUILD_PLATFORM} || mkdir %outputFolder%\\${BUILD_PLATFORM}"
+                    bat "%UNITY_EXECUTABLE% -projectPath %CD% -quit -batchmode -nographics -buildTarget ${BUILD_PLATFORM} -customBuildPath %CD%\\%outputFolder%\\${BUILD_PLATFORM}\\ -customBuildName %BUILD_NAME% -executeMethod BuildCommand.PerformBuild"
                 }
             }
         }
 
-        /*stage('Build') {
-            matrix {
-                agent {
-                    label "${PLATFORM}-agent"
-                }
-                when {
-                    expression { IS_COMMIT_HAVE_PARAMETERS != true }
-                    anyOf {
-                        changelog ".*All.*"
-                        expression { params.buildTarget == 'All' }
-                        expression { params.buildTarget == env.PLATFORM }
-                    } 
-                }
-                axes {
-                    axis {
-                        name 'PLATFORM'
-                        values 'Android', 'StandaloneWindows'
-                    }
-                }
-                stages {
-                    stage('Creating directory') {
-                        steps {
-                            script {
-                                echo "Create Application output folder..."
-                                bat 'cd %outputFolder%\\%PLATFORM% || mkdir %outputFolder%\\%PLATFORM%'
-                            }
-                        }
-                    }
-                    stage('Build') {
-                        steps {
-                            script {
-                                echo "Do Build for ${PLATFORM}"
-                                bat '%UNITY_EXECUTABLE% -projectPath %CD% -quit -batchmode -nographics -buildTarget %PLATFORM% -customBuildPath %CD%\\%outputFolder%\\%PLATFORM%\\ -customBuildName %BUILD_NAME% -executeMethod BuildCommand.PerformBuild'
-                            }
-                        }
-                    }
-                }
-            }
-        }*/
+        // stage('Build') {
+        //     matrix {
+        //         agent {
+        //             label "${PLATFORM}-agent"
+        //         }
+        //         when {
+        //             anyOf {
+        //                 expression { params.buildTarget == 'All' }
+        //                 expression { params.buildTarget == env.PLATFORM }
+        //             }
+        //         }
+        //         axes {
+        //             axis {
+        //                 name 'PLATFORM'
+        //                 values 'Android', 'StandaloneWindows'
+        //             }
+        //         }
+        //         stages {
+        //             stage("Build for ${PLATFORM}") {
+        //                 steps {
+        //                     script {
+        //                         echo "Create output folder"
+        //                         bat 'cd %outputFolder%\\%PLATFORM% || mkdir %outputFolder%\\%PLATFORM%'
+        //                         echo "Do Build for ${PLATFORM}"
+        //                         bat '%UNITY_EXECUTABLE% -projectPath %CD% -quit -batchmode -nographics -buildTarget %PLATFORM% -customBuildPath %CD%\\%outputFolder%\\%PLATFORM%\\ -customBuildName %BUILD_NAME% -executeMethod BuildCommand.PerformBuild'
+        //                     }
+        //                 }
+        //             }
+        //         }
+        //     }
+        // }
     }
     //Any action we want to perform after all the steps have succeeded or failed
     post {
