@@ -24,8 +24,6 @@ pipeline {
         IS_DEVELOPMENT_BUILD = "${params.developmentBuild}"
         def IS_COMMIT_HAVE_PARAMETERS = false
         def BUILD_PLATFORM = "All"
-
-        // Add other EnvVars here
     }
 
     //Options: add timestamp to job logs and limiting the number of builds to be kept.
