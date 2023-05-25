@@ -95,13 +95,11 @@ pipeline {
 
         stage('Test') {
             agent any
-            // when {
-            //     expression { IS_COMMIT_HAVE_PARAMETERS == false }
-            // }
+            when {
+                expression { IS_COMMIT_HAVE_PARAMETERS != true }
+            }
             steps {
                 script {
-                    echo "IS_COMMIT_HAVE_PARAMETERS: ${IS_COMMIT_HAVE_PARAMETERS}"
-                    IS_COMMIT_HAVE_PARAMETERS = true
                     echo "IS_COMMIT_HAVE_PARAMETERS: ${IS_COMMIT_HAVE_PARAMETERS}"
                 }
             }
