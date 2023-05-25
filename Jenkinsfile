@@ -22,7 +22,7 @@ pipeline {
 
         //PARAMETERS DATA
         IS_DEVELOPMENT_BUILD = "${params.developmentBuild}"
-        def BUILD_PLATFORM = "All"
+        def PLATFORM = "All"
     }
 
     //Options: add timestamp to job logs and limiting the number of builds to be kept.
@@ -61,11 +61,11 @@ pipeline {
             }
             steps {
                 script {
-                    BUILD_PLATFORM = "Android"
-                    echo "PLATFORM: ${BUILD_PLATFORM}"
-                    // echo "Create Application output folder..."
-                    // bat 'cd %outputFolder%\\%PLATFORM% || mkdir %outputFolder%\\%PLATFORM%'
-                    // bat '%UNITY_EXECUTABLE% -projectPath %CD% -quit -batchmode -nographics -buildTarget %PLATFORM% -customBuildPath %CD%\\%outputFolder%\\%PLATFORM%\\ -customBuildName %BUILD_NAME% -executeMethod BuildCommand.PerformBuild'
+                    PLATFORM = "Android"
+                    echo "PLATFORM: ${PLATFORM}"
+                    echo "Create Application output folder..."
+                    bat 'cd %outputFolder%\\%PLATFORM% || mkdir %outputFolder%\\%PLATFORM%'
+                    bat '%UNITY_EXECUTABLE% -projectPath %CD% -quit -batchmode -nographics -buildTarget %PLATFORM% -customBuildPath %CD%\\%outputFolder%\\%PLATFORM%\\ -customBuildName %BUILD_NAME% -executeMethod BuildCommand.PerformBuild'
                 }
             }
         }
@@ -79,11 +79,11 @@ pipeline {
             }
             steps {
                 script {
-                    BUILD_PLATFORM = "StandaloneWindows"
-                    echo "PLATFORM: ${BUILD_PLATFORM}"
-                    // echo "Create Application output folder..."
-                    // bat 'cd %outputFolder%\\%PLATFORM% || mkdir %outputFolder%\\%PLATFORM%'
-                    // bat '%UNITY_EXECUTABLE% -projectPath %CD% -quit -batchmode -nographics -buildTarget %PLATFORM% -customBuildPath %CD%\\%outputFolder%\\%PLATFORM%\\ -customBuildName %BUILD_NAME% -executeMethod BuildCommand.PerformBuild'
+                    PLATFORM = "StandaloneWindows"
+                    echo "PLATFORM: ${PLATFORM}"
+                    echo "Create Application output folder..."
+                    bat 'cd %outputFolder%\\%PLATFORM% || mkdir %outputFolder%\\%PLATFORM%'
+                    bat '%UNITY_EXECUTABLE% -projectPath %CD% -quit -batchmode -nographics -buildTarget %PLATFORM% -customBuildPath %CD%\\%outputFolder%\\%PLATFORM%\\ -customBuildName %BUILD_NAME% -executeMethod BuildCommand.PerformBuild'
                 }
             }
         }
