@@ -93,24 +93,24 @@ pipeline {
             }
         }
 
-        stage('Test') {
-            agent any
-            when {
-                expression { IS_COMMIT_HAVE_PARAMETERS != true }
-            }
-            steps {
-                script {
-                    echo "IS_COMMIT_HAVE_PARAMETERS: ${IS_COMMIT_HAVE_PARAMETERS}"
-                }
-            }
-        }
+        // stage('Test') {
+        //     agent any
+        //     when {
+        //         expression { IS_COMMIT_HAVE_PARAMETERS != true }
+        //     }
+        //     steps {
+        //         script {
+        //             echo "IS_COMMIT_HAVE_PARAMETERS: ${IS_COMMIT_HAVE_PARAMETERS}"
+        //         }
+        //     }
+        // }
         stage('Build') {
             matrix {
                 agent {
                     label "${PLATFORM}-agent"
                 }
                 when {
-                    expression { IS_COMMIT_HAVE_PARAMETERS == false }
+                    expression { IS_COMMIT_HAVE_PARAMETERS != true }
                     anyOf {
                         //changelog ".*All.*"
                         expression { params.buildTarget == 'All' }
