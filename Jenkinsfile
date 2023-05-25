@@ -12,17 +12,17 @@ pipeline {
         appname = "JenkinsCi" // Set to your own game
         // Github data
         String gitUrl = "https://github.com/aleksanderderkanosov/jenkins-ci.git"
-        
+
         // Unity tool installation
         UNITY_EXECUTABLE = "E:\\Unity\\Hub\\Editor\\2021.3.5f1\\Editor\\Unity.exe" // create system environment var pointing to unity install path
 
         // Unity Build params
         BUILD_NAME = "${appname}_${currentBuild.number}"
         String outputFolder = "CurrentBuild"
+        def PLATFORM = "All"
 
         //PARAMETERS DATA
         IS_DEVELOPMENT_BUILD = "${params.developmentBuild}"
-        def PLATFORM = "All"
     }
 
     //Options: add timestamp to job logs and limiting the number of builds to be kept.
@@ -82,8 +82,8 @@ pipeline {
                     PLATFORM = "StandaloneWindows"
                     echo "PLATFORM: ${PLATFORM}"
                     echo "Create Application output folder..."
-                    //bat 'cd %outputFolder%\\%PLATFORM% || mkdir %outputFolder%\\%PLATFORM%'
-                    //bat '%UNITY_EXECUTABLE% -projectPath %CD% -quit -batchmode -nographics -buildTarget %PLATFORM% -customBuildPath %CD%\\%outputFolder%\\%PLATFORM%\\ -customBuildName %BUILD_NAME% -executeMethod BuildCommand.PerformBuild'
+                    bat "cd %outputFolder%\\${PLATFORM} || mkdir %outputFolder%\\${PLATFORM}"
+                    bat "%UNITY_EXECUTABLE% -projectPath %CD% -quit -batchmode -nographics -buildTarget ${PLATFORM} -customBuildPath %CD%\\%outputFolder%\\${PLATFORM}\\ -customBuildName %BUILD_NAME% -executeMethod BuildCommand.PerformBuild"
                 }
             }
         }
