@@ -32,7 +32,6 @@ pipeline {
         buildDiscarder(logRotator(numToKeepStr: "10"))
     }
 
-    //Tag Selector of the agent that will run the build job
     agent none
     /*agent {
         node {
