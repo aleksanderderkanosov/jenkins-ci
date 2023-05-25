@@ -18,7 +18,7 @@ pipeline {
 
         // Unity Build params
         BUILD_NAME = "${appname}_${currentBuild.number}"
-        String outputFolder = "Builds\\CurrentBuild-${currentBuild.number}"
+        OUTPUT_FOLDER = "Builds\\CurrentBuild-${currentBuild.number}"
         def BUILD_PLATFORM = "All"
 
         //PARAMETERS DATA
@@ -62,9 +62,11 @@ pipeline {
             steps {
                 script {
                     BUILD_PLATFORM = "Android"
-                    echo "Create Application output folder..."
-                    bat "cd %outputFolder%\\${BUILD_PLATFORM}\\${} || mkdir %outputFolder%\\${BUILD_PLATFORM}"
-                    bat "%UNITY_EXECUTABLE% -projectPath %CD% -quit -batchmode -nographics -buildTarget ${BUILD_PLATFORM} -customBuildPath %CD%\\%outputFolder%\\${BUILD_PLATFORM}\\ -customBuildName %BUILD_NAME% -executeMethod BuildCommand.PerformBuild"
+                    OUTPUT_FOLDER = OUTPUT_FOLDER + "${BUILD_PLATFORM}"
+                    echo "OUTPUT_FOLDER: ${OUTPUT_FOLDER}"
+                    //echo "Create Application output folder..."
+                    //bat "cd %OUTPUT_FOLDER%\\${BUILD_PLATFORM}\\${} || mkdir %OUTPUT_FOLDER%\\${BUILD_PLATFORM}"
+                    //bat "%UNITY_EXECUTABLE% -projectPath %CD% -quit -batchmode -nographics -buildTarget ${BUILD_PLATFORM} -customBuildPath %CD%\\%OUTPUT_FOLDER%\\${BUILD_PLATFORM}\\ -customBuildName %BUILD_NAME% -executeMethod BuildCommand.PerformBuild"
                 }
             }
         }
@@ -78,9 +80,10 @@ pipeline {
             steps {
                 script {
                     BUILD_PLATFORM = "StandaloneWindows"
-                    echo "Create Application output folder..."
-                    bat "cd %outputFolder%\\${BUILD_PLATFORM} || mkdir %outputFolder%\\${BUILD_PLATFORM}"
-                    bat "%UNITY_EXECUTABLE% -projectPath %CD% -quit -batchmode -nographics -buildTarget ${BUILD_PLATFORM} -customBuildPath %CD%\\%outputFolder%\\${BUILD_PLATFORM}\\ -customBuildName %BUILD_NAME% -executeMethod BuildCommand.PerformBuild"
+                    OUTPUT_FOLDER = OUTPUT_FOLDER + "${BUILD_PLATFORM}"
+                    echo "OUTPUT_FOLDER: ${OUTPUT_FOLDER}"
+                    //bat "cd %OUTPUT_FOLDER%\\${BUILD_PLATFORM} || mkdir %OUTPUT_FOLDER%\\${BUILD_PLATFORM}"
+                    //bat "%UNITY_EXECUTABLE% -projectPath %CD% -quit -batchmode -nographics -buildTarget ${BUILD_PLATFORM} -customBuildPath %CD%\\%OUTPUT_FOLDER%\\${BUILD_PLATFORM}\\ -customBuildName %BUILD_NAME% -executeMethod BuildCommand.PerformBuild"
                 }
             }
         }
@@ -107,9 +110,9 @@ pipeline {
         //                 steps {
         //                     script {
         //                         echo "Create output folder"
-        //                         bat 'cd %outputFolder%\\%PLATFORM% || mkdir %outputFolder%\\%PLATFORM%'
+        //                         bat 'cd %OUTPUT_FOLDER%\\%PLATFORM% || mkdir %OUTPUT_FOLDER%\\%PLATFORM%'
         //                         echo "Do Build for ${PLATFORM}"
-        //                         bat '%UNITY_EXECUTABLE% -projectPath %CD% -quit -batchmode -nographics -buildTarget %PLATFORM% -customBuildPath %CD%\\%outputFolder%\\%PLATFORM%\\ -customBuildName %BUILD_NAME% -executeMethod BuildCommand.PerformBuild'
+        //                         bat '%UNITY_EXECUTABLE% -projectPath %CD% -quit -batchmode -nographics -buildTarget %PLATFORM% -customBuildPath %CD%\\%OUTPUT_FOLDER%\\%PLATFORM%\\ -customBuildName %BUILD_NAME% -executeMethod BuildCommand.PerformBuild'
         //                     }
         //                 }
         //             }
