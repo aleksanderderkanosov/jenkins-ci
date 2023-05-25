@@ -22,7 +22,7 @@ pipeline {
 
         //PARAMETERS DATA
         IS_DEVELOPMENT_BUILD = "${params.developmentBuild}"
-        COMMIT_MSG = "Last commit"
+        //COMMIT_MSG = "Last commit"
 
         // Add other EnvVars here
     }
@@ -54,7 +54,7 @@ pipeline {
                         currentBuild.result = "FAILED"
                         echo "JOB FAILED: The selected branch does not exists."
                     }
-                    env.COMMIT_MSG = bat (script: "git log -1 --pretty=%%B", returnStdout: true).trim().readLines().drop(1).join(" ")
+                    def COMMIT_MSG = bat (script: "git log -1 --pretty=%%B", returnStdout: true).trim().readLines().drop(1).join(" ")
                     echo "Last commit: ${COMMIT_MSG}"
                 }
             }
@@ -81,6 +81,7 @@ pipeline {
                         steps {
                             script {
                                 echo "Create Application output folder..."
+                                echo "Last commit: ${COMMIT_MSG}"
                                 bat 'cd %outputFolder%\\%PLATFORM% || mkdir %outputFolder%\\%PLATFORM%'
                             }
                         }
