@@ -51,19 +51,12 @@ pipeline {
                 script {
                     try {
                         git url: "${gitUrl}", branch: "${gitBranch}"
+                        env.GIT_COMMIT_MSG = sh (script: 'git log -1 --pretty=%B', returnStdout: true).trim()
+                        echo "Last commit: ${GIT_COMMIT_MSG}"
                     } catch (e) {
                         currentBuild.result = "FAILED"
                         echo "JOB FAILED: The selected branch does not exists."
                     }
-                }
-            }
-        }
-        stage ('Get commit message') {
-            agent any
-            steps {
-                script {
-                    env.GIT_COMMIT_MSG = sh (script: 'git log -1 --pretty=%B', returnStdout: true).trim()
-                    echo "Last commit: ${GIT_COMMIT_MSG}"
                 }
             }
         }
