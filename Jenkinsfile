@@ -101,6 +101,8 @@ pipeline {
             steps {
                 script {
                     echo "IS_COMMIT_HAVE_PARAMETERS: ${IS_COMMIT_HAVE_PARAMETERS}"
+                    IS_COMMIT_HAVE_PARAMETERS = true
+                    echo "IS_COMMIT_HAVE_PARAMETERS: ${IS_COMMIT_HAVE_PARAMETERS}"
                 }
             }
         }
