@@ -99,7 +99,7 @@ pipeline {
                 }
                 when {
                     not {
-                        IS_COMMIT_HAVE_PARAMETERS
+                        expression { IS_COMMIT_HAVE_PARAMETERS }
                     }
                     anyOf {
                         changelog ".*All.*"
