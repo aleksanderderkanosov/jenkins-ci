@@ -37,19 +37,6 @@ pipeline {
     }
     //The steps necessary to generate the desired build
     stages {
-        // stage('Git Pull') {
-        //     steps {
-        //         echo "Git pull repo."
-        //         script {
-        //             try {
-        //                 git url: "${gitUrl}", branch: "${gitBranch}"
-        //             } catch (e) {
-        //                 currentBuild.result = "FAILED"
-        //                 echo "JOB FAILED: The selected branch does not exists."
-        //             }
-        //         }
-        //     }
-        // }
         stage('Build') {
             steps {
                 script {
@@ -65,38 +52,6 @@ pipeline {
                 }
             }
         }
-
-        // stage('Build') {
-        //     matrix {
-        //         agent {
-        //             label "${PLATFORM}-agent"
-        //         }
-        //         when {
-        //             anyOf {
-        //                 expression { params.buildTarget == 'All' }
-        //                 expression { params.buildTarget == env.PLATFORM }
-        //             }
-        //         }
-        //         axes {
-        //             axis {
-        //                 name 'PLATFORM'
-        //                 values 'Android', 'StandaloneWindows'
-        //             }
-        //         }
-        //         stages {
-        //             stage("Build for ${PLATFORM}") {
-        //                 steps {
-        //                     script {
-        //                         echo "Create output folder"
-        //                         bat 'cd %OUTPUT_FOLDER%\\%PLATFORM% || mkdir %OUTPUT_FOLDER%\\%PLATFORM%'
-        //                         echo "Do Build for ${PLATFORM}"
-        //                         bat '%UNITY_EXECUTABLE% -projectPath %CD% -quit -batchmode -nographics -buildTarget %PLATFORM% -customBuildPath %CD%\\%OUTPUT_FOLDER%\\%PLATFORM%\\ -customBuildName %BUILD_NAME% -executeMethod BuildCommand.PerformBuild'
-        //                     }
-        //                 }
-        //             }
-        //         }
-        //     }
-        // }
     }
     //Any action we want to perform after all the steps have succeeded or failed
     post {
