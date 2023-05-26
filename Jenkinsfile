@@ -51,6 +51,7 @@ pipeline {
                                     bat "cd ${OUTPUT_FOLDER} || mkdir ${OUTPUT_FOLDER}"
                                     bat "${UNITY_EXECUTABLE} -projectPath %CD% -quit -batchmode -nographics -buildTarget Android -customBuildPath %CD%\\${OUTPUT_FOLDER}\\ -customBuildName ${BUILD_NAME} -xrPlugin ${xrPlugin} -executeMethod BuildCommand.PerformBuild"
                                 }
+                                break
                             }
                             OUTPUT_FOLDER = env.OUTPUT_FOLDER + "\\${platform}"
                             echo "OUTPUT_FOLDER: ${OUTPUT_FOLDER}"
