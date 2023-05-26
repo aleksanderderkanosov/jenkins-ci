@@ -3,6 +3,7 @@ pipeline {
     //Variable inputs that modify the behavior of the job
     parameters {
         choice(name: 'buildTarget', choices: ['All', 'Android', 'StandaloneWindows'], description: "Choose the target platform.")
+        choice(name: 'xrPlugin', choices: ['None', 'All', 'Oculus'], description: "Choose the target XR Plug-in Provider.")
         string(name: 'gitBranch', defaultValue: 'master', description: 'Set the branch.')
         booleanParam(name: 'developmentBuild', defaultValue: true, description: 'Choose the buildType.')
     }
@@ -43,10 +44,21 @@ pipeline {
                     platforms = ['Android', 'StandaloneWindows']
                     platforms.each { platform ->
                         if (params.buildTarget == 'All' || params.buildTarget == platform) {
-                            OUTPUT_FOLDER = env.OUTPUT_FOLDER + "\\${platform}"
-                            echo "OUTPUT_FOLDER: ${OUTPUT_FOLDER}"
-                            bat "cd ${OUTPUT_FOLDER} || mkdir ${OUTPUT_FOLDER}"
-                            bat "${UNITY_EXECUTABLE} -projectPath %CD% -quit -batchmode -nographics -buildTarget ${platform} -customBuildPath %CD%\\${OUTPUT_FOLDER}\\ -customBuildName ${BUILD_NAME} -executeMethod BuildCommand.PerformBuild"
+                            if (platform == 'Android' && params.xrPlugin != 'None') {
+                                xrPlugins = ['Oculus']
+                                xrPlugins.each { xrPlugin ->
+                                    if (params.xrPlugin == 'All' || params.xrPlugin == xrPlugin) {
+                                        OUTPUT_FOLDER = env.OUTPUT_FOLDER + "\\${platform}" + "\\${xrPlugin}"
+                                        echo "OUTPUT_FOLDER: ${OUTPUT_FOLDER}"
+                                        bat "cd ${OUTPUT_FOLDER} || mkdir ${OUTPUT_FOLDER}"
+                                    }
+                                }
+                            } else {
+                                OUTPUT_FOLDER = env.OUTPUT_FOLDER + "\\${platform}"
+                                echo "OUTPUT_FOLDER: ${OUTPUT_FOLDER}"
+                                bat "cd ${OUTPUT_FOLDER} || mkdir ${OUTPUT_FOLDER}"
+                                //bat "${UNITY_EXECUTABLE} -projectPath %CD% -quit -batchmode -nographics -buildTarget ${platform} -customBuildPath %CD%\\${OUTPUT_FOLDER}\\ -customBuildName ${BUILD_NAME} -executeMethod BuildCommand.PerformBuild"
+                            }
                         }
                     }
                 }
