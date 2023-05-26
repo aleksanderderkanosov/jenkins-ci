@@ -44,7 +44,7 @@ pipeline {
                     platforms.each { platform ->
                         if (params.buildTarget == 'All' || params.buildTarget == platform) {
                             OUTPUT_FOLDER = env.OUTPUT_FOLDER + "\\${platform}"
-                            BAT_COMMAND = "${UNITY_EXECUTABLE} -projectPath %CD% -quit -batchmode -nographics -customBuildPath -customBuildName ${BUILD_NAME}"
+                            BAT_COMMAND = "${UNITY_EXECUTABLE} -projectPath %CD% -quit -batchmode -nographics -customBuildName ${BUILD_NAME}"
                             if (platform == 'XR') {
                                 xrPlugins = ['Oculus']
                                 xrPlugins.each { xrPlugin ->
