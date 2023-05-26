@@ -13,8 +13,12 @@ static class BuildCommand {
         // Common for all Platforms
         var buildTarget = GetBuildTarget();
         var targetGroup = GetBuildTargetGroup(buildTarget);
-        var xrPlugin = GetXrPlugin();
-        XRPluginManagementSettings.EnablePlugin(targetGroup, xrPlugin);
+
+        string xrPluginCommand = GetArgument("xrPlugin");
+        if (xrPluginCommand != null) {
+            var xrPlugin = GetXrPlugin(xrPluginCommand);
+            XRPluginManagementSettings.EnablePlugin(targetGroup, xrPlugin);
+        }
 
         bool isDevelopmentBuild = IsDevelopmentType();
         HandleDevelopmentType(isDevelopmentBuild);
@@ -65,9 +69,7 @@ static class BuildCommand {
         return BuildTarget.NoTarget;
     }
 
-    static XRPluginManagementSettings.Plugin GetXrPlugin() {
-        string xrPlugin = GetArgument("xrPlugin");
-
+    static XRPluginManagementSettings.Plugin GetXrPlugin(string xrPlugin) {
         Console.WriteLine(":: Received xrPlugin " + xrPlugin);
 
         if (xrPlugin.TryConvertToEnum(out XRPluginManagementSettings.Plugin plugin))
