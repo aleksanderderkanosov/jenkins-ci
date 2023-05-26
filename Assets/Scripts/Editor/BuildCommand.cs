@@ -13,6 +13,8 @@ static class BuildCommand {
         // Common for all Platforms
         var buildTarget = GetBuildTarget();
         var targetGroup = GetBuildTargetGroup(buildTarget);
+        var xrPlugin = GetXrPlugin();
+        XRPluginManagementSettings.EnablePlugin(targetGroup, xrPlugin);
 
         bool isDevelopmentBuild = IsDevelopmentType();
         HandleDevelopmentType(isDevelopmentBuild);
@@ -61,6 +63,19 @@ static class BuildCommand {
         Console.WriteLine($":: {nameof(buildTargetName)} \"{buildTargetName}\" not defined on enum {nameof(BuildTarget)}, using {nameof(BuildTarget.NoTarget)} enum to build");
 
         return BuildTarget.NoTarget;
+    }
+
+    static XRPluginManagementSettings.Plugin GetXrPlugin() {
+        string xrPlugin = GetArgument("xrPlugin");
+
+        Console.WriteLine(":: Received xrPlugin " + xrPlugin);
+
+        if (xrPlugin.TryConvertToEnum(out XRPluginManagementSettings.Plugin plugin))
+            return plugin;
+
+        Console.WriteLine($":: {nameof(xrPlugin)} \"{xrPlugin}\" not defined on enum {nameof(XRPluginManagementSettings.Plugin)}, using {nameof(XRPluginManagementSettings.Plugin.None)} enum to build");
+
+        return XRPluginManagementSettings.Plugin.None;
     }
 
     static BuildTargetGroup GetBuildTargetGroup(BuildTarget buildTarget) {
