@@ -2,15 +2,15 @@ pipeline {
 
     //Variable inputs that modify the behavior of the job
     parameters {
-        activeChoiceParam('BuildPlatforms') {
-            description('Choose the target build platform')
-            choiceType('Check Boxes')
-            groovyScript {
+        activeChoiceParam(name: 'BuildPlatforms',
+            description: 'Choose the target build platform',
+            choiceType: 'Check Boxes',
+            groovyScript: {
                 script('return ["StandaloneWindows:selected", "Android:selected", "XR:selected"]')
                 fallbackScript('return ["ERROR"]')
             }
-        }
-        activeChoiceReactiveParam('XrPlugins') {
+        )
+        /*activeChoiceReactiveParam('XrPlugins') {
             description('Choose the XR Plug-in Provider.')
             choiceType('Check Boxes')
             groovyScript {
@@ -18,7 +18,7 @@ pipeline {
                 fallbackScript('return ["ERROR"]')
             }
             referencedParameter('BuildPlatforms')
-        }
+        }*/
         string(name: 'gitBranch', defaultValue: 'master', description: 'Set the branch.')
         booleanParam(name: 'developmentBuild', defaultValue: true, description: 'Choose the buildType.')
     }
