@@ -22,7 +22,7 @@ properties([
       filterLength: 1,
       filterable: false,
       name: 'XrPlugins',
-      referencedParameters: 'BuildPlatforms',
+      //referencedParameters: 'BuildPlatforms',
       script: [
         $class: 'GroovyScript',
         fallbackScript: [
