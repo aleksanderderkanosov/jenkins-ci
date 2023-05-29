@@ -63,7 +63,6 @@ pipeline {
         BUILD_NAME = "${appname}_${currentBuild.number}"
         OUTPUT_FOLDER = "Builds\\CurrentBuild-${currentBuild.number}"
 
-        //PARAMETERS DATA
         IS_DEVELOPMENT_BUILD = "${params.developmentBuild}"
     }
 
