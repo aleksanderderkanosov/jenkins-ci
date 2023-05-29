@@ -1,36 +1,36 @@
 properties([
   parameters([
-    // [$class: 'CascadeChoiceParameter', 
-    //   choiceType: 'PT_CHECKBOX', 
-    //   description: 'Choose the target build platform.',
-    //   filterLength: 1,
-    //   filterable: false,
-    //   name: 'BuildPlatforms', 
-    //   script: [
-    //     $class: 'GroovyScript', 
-    //     script: [
-    //       classpath: [], 
-    //       sandbox: false, 
-    //       script: 
-    //         'return ["StandaloneWindows:selected", "Android:selected", "XR:selected"]'
-    //     ]
-    //   ]
-    // ],
+    [$class: 'CascadeChoiceParameter', 
+      choiceType: 'PT_CHECKBOX', 
+      description: 'Choose the target build platform.',
+      filterLength: 1,
+      filterable: false,
+      name: 'BuildPlatforms', 
+      script: [
+        $class: 'GroovyScript', 
+        script: [
+          classpath: [], 
+          sandbox: false, 
+          script: 
+            'return ["StandaloneWindows:selected", "Android:selected", "XR:selected"]'
+        ]
+      ]
+    ],
     [$class: 'CascadeChoiceParameter', 
       choiceType: 'PT_CHECKBOX', 
       description: 'Choose the XR Plug-in Provider.',
       filterLength: 1,
       filterable: false,
       name: 'XrPlugins',
-      //referencedParameters: 'BuildPlatforms',
+      referencedParameters: 'BuildPlatforms',
       script: [
         $class: 'GroovyScript',
-        // fallbackScript: [
-        //     classpath: [], 
-        //     sandbox: false, 
-        //     script: 
-        //         'return "None"'
-        // ],
+        fallbackScript: [
+            classpath: [], 
+            sandbox: false, 
+            script: 
+                'return "None"'
+        ],
         script: [
           classpath: [],
           sandbox: false,
