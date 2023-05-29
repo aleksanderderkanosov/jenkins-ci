@@ -43,7 +43,6 @@ properties([
 ])
 
 pipeline {
-
     //Variable inputs that modify the behavior of the job
     parameters {
         string(name: 'gitBranch', defaultValue: 'master', description: 'Set the branch.')
