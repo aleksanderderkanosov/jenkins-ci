@@ -65,7 +65,7 @@ pipeline {
         IS_DEVELOPMENT_BUILD = "${params.developmentBuild}"
     }
 
-    //Options: add timestamp to job logs and limiting the number of builds to be kept.
+    // Options: add timestamp to job logs and limiting the number of builds to be kept.
     options {
         timestamps()
         buildDiscarder(logRotator(numToKeepStr: "10"))
