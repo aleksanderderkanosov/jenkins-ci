@@ -32,10 +32,11 @@ properties([
                 'return "None"'
         ],
         script: [
-          classpath: [], 
-          sandbox: false, 
-          script: 
-            'if (BuildPlatforms.contains("XR")) { return ["Oculus:selected"] }'
+          classpath: [],
+          sandbox: false,
+          script:
+            //'if (params.BuildPlatforms.contains("XR")) { return ["Oculus:selected"] }'
+            'return ["Oculus:selected"]'
         ]
       ]
     ]
