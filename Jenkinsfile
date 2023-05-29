@@ -25,12 +25,12 @@ properties([
       //referencedParameters: 'BuildPlatforms',
       script: [
         $class: 'GroovyScript',
-        fallbackScript: [
-            classpath: [], 
-            sandbox: false, 
-            script: 
-                'return "None"'
-        ],
+        // fallbackScript: [
+        //     classpath: [], 
+        //     sandbox: false, 
+        //     script: 
+        //         'return "None"'
+        // ],
         script: [
           classpath: [],
           sandbox: false,
