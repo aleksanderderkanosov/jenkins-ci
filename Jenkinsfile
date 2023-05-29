@@ -1,3 +1,47 @@
+properties([
+  parameters([
+    [$class: 'CascadeChoiceParameter', 
+      choiceType: 'PT_CHECKBOX', 
+      description: 'Choose the target build platform.',
+      filterLength: 1,
+      filterable: false,
+      name: 'BuildPlatforms', 
+      script: [
+        $class: 'GroovyScript', 
+        script: [
+          classpath: [], 
+          sandbox: false, 
+          script: 
+            'return ["StandaloneWindows:selected", "Android:selected", "XR:selected"]'
+        ]
+      ]
+    ],
+    [$class: 'CascadeChoiceParameter', 
+      choiceType: 'PT_CHECKBOX', 
+      description: 'Choose the XR Plug-in Provider.',
+      filterLength: 1,
+      filterable: false,
+      name: 'XrPlugins',
+      referencedParameters: 'BuildPlatforms',
+      script: [
+        $class: 'GroovyScript',
+        fallbackScript: [
+            classpath: [], 
+            sandbox: false, 
+            script: 
+                'return "None"'
+        ],
+        script: [
+          classpath: [], 
+          sandbox: false, 
+          script: 
+            'if (BuildPlatforms.contains("XR")) { return ["Oculus:selected"] }'
+        ]
+      ]
+    ]
+  ])
+])
+
 pipeline {
 
     //Variable inputs that modify the behavior of the job
@@ -39,11 +83,11 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    BuildPlatforms.split(',').each { platform ->
+                    params.BuildPlatforms.split(',').each { platform ->
                         OUTPUT_FOLDER = env.OUTPUT_FOLDER + "\\${platform}"
                         BAT_COMMAND = "${UNITY_EXECUTABLE} -projectPath %CD% -quit -batchmode -nographics -customBuildName ${BUILD_NAME}"
                         if (platform.contains("XR")) {
-                            XrPlugins.split(',').each { xrPlugin ->
+                            params.XrPlugins.split(',').each { xrPlugin ->
                                 echo "xrPlugin: ${xrPlugin}"
                                 OUTPUT_FOLDER = OUTPUT_FOLDER + "\\${xrPlugin}"
                                 echo "OUTPUT_FOLDER: ${OUTPUT_FOLDER}"
