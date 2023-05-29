@@ -16,7 +16,7 @@ properties([
         ]
       ]
     ],
-    [$class: 'DynamicReferenceParameter', 
+    [$class: 'CascadeChoiceParameter', 
       choiceType: 'PT_CHECKBOX', 
       description: 'Choose the XR Plug-in Provider.',
       filterLength: 1,
@@ -36,7 +36,7 @@ properties([
           sandbox: false,
           script:
             //'if (params.BuildPlatforms.contains("XR")) { return ["Oculus:selected"] }'
-            'return ["Oculus:selected"]'
+            'return ["Oculus:selected", "Pico:selected"]'
         ]
       ]
     ]
