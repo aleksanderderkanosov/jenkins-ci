@@ -1,6 +1,6 @@
 properties([
   parameters([
-    [$class: 'CascadeChoiceParameter', 
+    [$class: 'ChoiceParameter', 
       choiceType: 'PT_CHECKBOX', 
       description: 'Choose the target build platform.',
       filterLength: 1,
