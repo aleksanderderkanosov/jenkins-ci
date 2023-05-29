@@ -2,13 +2,30 @@ pipeline {
 
     //Variable inputs that modify the behavior of the job
     parameters {
+        activeChoiceParam('BuildPlatforms') {
+            description('Choose the target build platform')
+            choiceType('Check Boxes')
+            groovyScript {
+                script('return ["StandaloneWindows:selected", "Android:selected", "XR:selected"]')
+                fallbackScript('return ["ERROR"]')
+            }
+        }
+        activeChoiceReactiveParam('XrPlugins') {
+            description('Choose the XR Plug-in Provider.')
+            choiceType('Check Boxes')
+            groovyScript {
+                script('if (BuildPlatforms.contains("XR")) { return ["Oculus:selected"] }')
+                fallbackScript('return ["ERROR"]')
+            }
+            referencedParameter('BuildPlatforms')
+        }
         string(name: 'gitBranch', defaultValue: 'master', description: 'Set the branch.')
         booleanParam(name: 'developmentBuild', defaultValue: true, description: 'Choose the buildType.')
     }
 
     //Definition of env variables that can be used throughout the pipeline job
     environment {
-        appname = "JenkinsCi" 
+        appname = "JenkinsCi"
         // Github data
         String gitUrl = "https://github.com/aleksanderderkanosov/jenkins-ci.git"
 
@@ -64,7 +81,7 @@ pipeline {
             }
         }
     }
-    
+
     //Any action we want to perform after all the steps have succeeded or failed
     post {
         success {
