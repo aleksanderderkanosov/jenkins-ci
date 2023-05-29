@@ -8,7 +8,7 @@ pipeline {
 
     //Definition of env variables that can be used throughout the pipeline job
     environment {
-        appname = "JenkinsCi" // Set to your own game
+        appname = "JenkinsCi"
         // Github data
         String gitUrl = "https://github.com/aleksanderderkanosov/jenkins-ci.git"
 
