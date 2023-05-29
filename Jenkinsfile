@@ -35,8 +35,8 @@ properties([
           classpath: [],
           sandbox: false,
           script:
-            //'if (params.BuildPlatforms.contains("XR")) { return ["Oculus:selected"] }'
-            'return ["Oculus:selected", "Pico:selected"]'
+            'if (params.BuildPlatforms.contains("XR")) { return ["Oculus:selected"] }'
+            //'return ["Oculus:selected", "Pico:selected"]'
         ]
       ]
     ]
