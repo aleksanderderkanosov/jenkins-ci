@@ -34,7 +34,7 @@ pipeline {
             label "Master-build-agent"
         }
     }
-    //The steps necessary to generate the desired build
+
     stages {
         stage('Build') {
             steps {
