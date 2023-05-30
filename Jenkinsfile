@@ -93,14 +93,14 @@ pipeline {
                                 bat "cd ${OUTPUT_FOLDER} || mkdir ${OUTPUT_FOLDER}"
 
                                 BAT_COMMAND = BAT_COMMAND + " -buildTarget Android -customBuildPath %CD%\\${OUTPUT_FOLDER}\\ -xrPlugin ${plugin} -executeMethod BuildCommand.PerformBuild"
-                                bat "${BAT_COMMAND}"
+                                //bat "${BAT_COMMAND}"
                             }
                         } else {
                             echo "OUTPUT_FOLDER: ${OUTPUT_FOLDER}"
                             bat "cd ${OUTPUT_FOLDER} || mkdir ${OUTPUT_FOLDER}"
 
                             BAT_COMMAND = BAT_COMMAND + " -buildTarget ${platform} -customBuildPath %CD%\\${OUTPUT_FOLDER}\\ -executeMethod BuildCommand.PerformBuild"
-                            bat "${BAT_COMMAND}"
+                            //bat "${BAT_COMMAND}"
                         }
                     }
                 }
