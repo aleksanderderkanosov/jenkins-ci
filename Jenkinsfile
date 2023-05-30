@@ -61,7 +61,6 @@ pipeline {
         // Unity Build params
         BUILD_NAME = "${appname}_${currentBuild.number}"
         OUTPUT_FOLDER = "Builds\\CurrentBuild-${currentBuild.number}"
-
         IS_DEVELOPMENT_BUILD = "${params.developmentBuild}"
     }
 
