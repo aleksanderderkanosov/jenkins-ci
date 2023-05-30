@@ -52,6 +52,7 @@ pipeline {
     //Definition of env variables that can be used throughout the pipeline job
     environment {
         appname = "JenkinsCi"
+        
         // Github data
         String gitUrl = "https://github.com/aleksanderderkanosov/jenkins-ci.git"
 
