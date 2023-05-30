@@ -58,7 +58,7 @@ pipeline {
         // Unity tool installation
         UNITY_EXECUTABLE = "E:\\Unity\\Hub\\Editor\\2021.3.5f1\\Editor\\Unity.exe" // create system environment var pointing to unity install path
 
-        // Unity Build params
+        // Unity build params
         BUILD_NAME = "${appname}_${currentBuild.number}"
         OUTPUT_FOLDER = "Builds\\CurrentBuild-${currentBuild.number}"
         IS_DEVELOPMENT_BUILD = "${params.developmentBuild}"
