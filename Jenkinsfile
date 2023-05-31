@@ -1,45 +1,45 @@
 properties([
-  parameters([
-    [$class: 'ChoiceParameter', 
-      choiceType: 'PT_CHECKBOX', 
-      description: 'Choose the target build platform.',
-      filterLength: 1,
-      filterable: false,
-      name: 'BuildPlatforms', 
-      script: [
-        $class: 'GroovyScript', 
-        script: [
-          classpath: [], 
-          sandbox: false, 
-          script: 
-            'return ["StandaloneWindows:selected", "Android:selected", "XR:selected"]'
-        ]
-      ]
-    ],
-    [$class: 'CascadeChoiceParameter', 
-      choiceType: 'PT_CHECKBOX', 
-      description: 'Choose the XR Plug-in Provider.',
-      filterLength: 1,
-      filterable: false,
-      name: 'XrPlugins',
-      referencedParameters: 'BuildPlatforms',
-      script: [
-        $class: 'GroovyScript',
-        fallbackScript: [
-            classpath: [], 
-            sandbox: false, 
-            script: 
-                'return "None"'
+    parameters([
+        [$class: 'ChoiceParameter', 
+            choiceType: 'PT_CHECKBOX', 
+            description: 'Choose the target build platform.',
+            filterLength: 1,
+            filterable: false,
+            name: 'BuildPlatforms', 
+            script: [
+                $class: 'GroovyScript', 
+                script: [
+                classpath: [], 
+                sandbox: false, 
+                script: 
+                    'return ["StandaloneWindows:selected", "Android:selected", "XR:selected"]'
+                ]
+            ]
         ],
-        script: [
-          classpath: [],
-          sandbox: false,
-          script:
-            'if (BuildPlatforms.contains("XR")) { return ["Oculus:selected", "Pico:selected"] }'
+        [$class: 'CascadeChoiceParameter', 
+            choiceType: 'PT_CHECKBOX', 
+            description: 'Choose the XR Plug-in Provider.',
+            filterLength: 1,
+            filterable: false,
+            name: 'XrPlugins',
+            referencedParameters: 'BuildPlatforms',
+            script: [
+                $class: 'GroovyScript',
+                fallbackScript: [
+                    classpath: [], 
+                    sandbox: false, 
+                    script: 
+                        'return "None"'
+                ],
+                script: [
+                classpath: [],
+                sandbox: false,
+                script:
+                    'if (BuildPlatforms.contains("XR")) { return ["Oculus:selected", "Pico:selected"] }'
+                ]
+            ]
         ]
-      ]
-    ]
-  ])
+    ])
 ])
 
 pipeline {
@@ -67,7 +67,7 @@ pipeline {
     // Options: add timestamp to job logs and limiting the number of builds to be kept.
     options {
         timestamps()
-        buildDiscarder(logRotator(numToKeepStr: "10"))
+        //buildDiscarder(logRotator(numToKeepStr: "10"))
     }
 
     agent {
@@ -86,21 +86,27 @@ pipeline {
                         OUTPUT_FOLDER = env.OUTPUT_FOLDER + "\\${platform}"
                         BAT_COMMAND = "${UNITY_EXECUTABLE} -projectPath %CD% -quit -batchmode -nographics -customBuildName ${BUILD_NAME}"
                         if (platform.contains("XR")) {
-                            params.XrPlugins.split(',').each { plugin ->
+                            if (params.XrPlugins.isEmpty()) {
+                                plugins = ['Oculus', 'Pico']
+                            }
+                            else {
+                                plugins = params.XrPlugins.split(',')
+                            }
+                            plugins.each { plugin ->
                                 echo "plugin: ${plugin}"
                                 OUTPUT_FOLDER = env.OUTPUT_FOLDER + "\\${platform}" + "\\${plugin}"
                                 echo "OUTPUT_FOLDER: ${OUTPUT_FOLDER}"
                                 bat "cd ${OUTPUT_FOLDER} || mkdir ${OUTPUT_FOLDER}"
 
                                 BAT_COMMAND = BAT_COMMAND + " -buildTarget Android -customBuildPath %CD%\\${OUTPUT_FOLDER}\\ -xrPlugin ${plugin} -executeMethod BuildCommand.PerformBuild"
-                                bat "${BAT_COMMAND}"
+                                //bat "${BAT_COMMAND}"
                             }
                         } else {
                             echo "OUTPUT_FOLDER: ${OUTPUT_FOLDER}"
                             bat "cd ${OUTPUT_FOLDER} || mkdir ${OUTPUT_FOLDER}"
 
                             BAT_COMMAND = BAT_COMMAND + " -buildTarget ${platform} -customBuildPath %CD%\\${OUTPUT_FOLDER}\\ -executeMethod BuildCommand.PerformBuild"
-                            bat "${BAT_COMMAND}"
+                            //bat "${BAT_COMMAND}"
                         }
                     }
                 }
@@ -112,7 +118,7 @@ pipeline {
     post {
         success {
             echo "Success!"
-            archiveArtifacts artifacts: "${env.OUTPUT_FOLDER}/**/*.*", onlyIfSuccessful: true
+            //archiveArtifacts artifacts: "${env.OUTPUT_FOLDER}/**/*.*", onlyIfSuccessful: true
         }
         failure {
             echo "Failure!"
