@@ -67,7 +67,6 @@ pipeline {
     // Options: add timestamp to job logs and limiting the number of builds to be kept.
     options {
         timestamps()
-        //buildDiscarder(logRotator(numToKeepStr: "10"))
     }
 
     agent {
@@ -87,7 +86,7 @@ pipeline {
                         BAT_COMMAND = "${UNITY_EXECUTABLE} -projectPath %CD% -quit -batchmode -nographics -customBuildName ${BUILD_NAME}"
                         if (platform.contains("XR")) {
                             if (params.XrPlugins.isEmpty()) {
-                                plugins = ['Oculus', 'Pico']
+                                plugins = ['Oculus']
                             }
                             else {
                                 plugins = params.XrPlugins.split(',')
@@ -99,14 +98,14 @@ pipeline {
                                 bat "cd ${OUTPUT_FOLDER} || mkdir ${OUTPUT_FOLDER}"
 
                                 BAT_COMMAND = BAT_COMMAND + " -buildTarget Android -customBuildPath %CD%\\${OUTPUT_FOLDER}\\ -xrPlugin ${plugin} -executeMethod BuildCommand.PerformBuild"
-                                //bat "${BAT_COMMAND}"
+                                bat "${BAT_COMMAND}"
                             }
                         } else {
                             echo "OUTPUT_FOLDER: ${OUTPUT_FOLDER}"
                             bat "cd ${OUTPUT_FOLDER} || mkdir ${OUTPUT_FOLDER}"
 
                             BAT_COMMAND = BAT_COMMAND + " -buildTarget ${platform} -customBuildPath %CD%\\${OUTPUT_FOLDER}\\ -executeMethod BuildCommand.PerformBuild"
-                            //bat "${BAT_COMMAND}"
+                            bat "${BAT_COMMAND}"
                         }
                     }
                 }
@@ -118,7 +117,7 @@ pipeline {
     post {
         success {
             echo "Success!"
-            //archiveArtifacts artifacts: "${env.OUTPUT_FOLDER}/**/*.*", onlyIfSuccessful: true
+            archiveArtifacts artifacts: "${env.OUTPUT_FOLDER}/**/*.*", onlyIfSuccessful: true
         }
         failure {
             echo "Failure!"
