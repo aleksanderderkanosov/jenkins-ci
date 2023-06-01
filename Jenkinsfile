@@ -54,9 +54,6 @@ pipeline {
         // GitHub data
         String gitUrl = "https://github.com/aleksanderderkanosov/jenkins-ci.git"
 
-        // Unity tool installation
-        UNITY_EXECUTABLE = "E:\\Unity\\Hub\\Editor\\2021.3.5f1\\Editor\\Unity.exe" // create system environment var pointing to unity install path
-
         // Unity build params
         BUILD_NAME = "${appname}_${currentBuild.number}"
         OUTPUT_FOLDER = "Builds\\CurrentBuild-${currentBuild.number}"
