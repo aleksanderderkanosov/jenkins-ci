@@ -36,7 +36,7 @@ public static class XRPluginManagementSettings {
         Plugin.OpenXR => "UnityEngine.XR.OpenXR.OpenXRLoader",
         Plugin.Oculus => "Unity.XR.Oculus.OculusLoader",
         Plugin.OpenVR => "Unity.XR.OpenVR.OpenVRLoader",
-        Plugin.Pico => "Unity.XR.PXR.PXR_Loader",
+        Plugin.Pico => "Unity.XR.PXR.PXRLoader",
         _ => throw new NotImplementedException()
     };
 }
