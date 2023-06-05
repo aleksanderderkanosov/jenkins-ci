@@ -10,6 +10,7 @@ public static class XRPluginManagementSettings {
         OpenXR,
         Oculus,
         OpenVR,
+        Pico,
         None
     }
 
@@ -35,6 +36,7 @@ public static class XRPluginManagementSettings {
         Plugin.OpenXR => "UnityEngine.XR.OpenXR.OpenXRLoader",
         Plugin.Oculus => "Unity.XR.Oculus.OculusLoader",
         Plugin.OpenVR => "Unity.XR.OpenVR.OpenVRLoader",
+        Plugin.Pico => "Unity.XR.PXR.PXR_Loader",
         _ => throw new NotImplementedException()
     };
 }

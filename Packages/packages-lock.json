@@ -123,7 +123,7 @@
     },
     "com.unity.subsystemregistration": {
       "version": "1.1.0",
-      "depth": 2,
+      "depth": 1,
       "source": "registry",
       "dependencies": {
         "com.unity.modules.subsystems": "1.0.0"
@@ -246,6 +246,17 @@
         "com.unity.xr.management": "4.2.0"
       },
       "url": "https://packages.unity.com"
+    },
+    "com.unity.xr.picoxr": {
+      "version": "file:PICO Unity Integration SDK-213",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {
+        "com.unity.xr.management": "3.2.16",
+        "com.unity.ugui": "1.0.0",
+        "com.unity.subsystemregistration": "1.0.6",
+        "com.unity.xr.interaction.toolkit": "0.9.4-preview"
+      }
     },
     "com.unity.modules.ai": {
       "version": "1.0.0",

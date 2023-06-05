@@ -1,7 +1,7 @@
 @Library("shared-library") _
 
 unityPipelineTemplate {
-    appname = "JenkinsCi"
+    appName = "JenkinsCi"
     buildPlatforms = ['StandaloneWindows', 'Android', 'XR']
     xrPlugins = ['Oculus', 'Pico']
 }
