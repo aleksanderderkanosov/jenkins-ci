@@ -2,6 +2,6 @@
 
 unityPipelineTemplate {
     appName = "JenkinsCi"
-    buildPlatforms = ['StandaloneWindows', 'Android', 'XR']
+    buildPlatforms = ['XR']
     xrPlugins = ['Oculus', 'Pico']
 }

@@ -25,6 +25,7 @@ public static class XRPluginManagementSettings {
     public static void DisablePlugin(BuildTargetGroup buildTargetGroup, Plugin plugin) {
         var buildTargetSettings = XRGeneralSettingsPerBuildTarget.XRGeneralSettingsForBuildTarget(buildTargetGroup);
         var pluginsSettings = buildTargetSettings.AssignedSettings;
+        Console.WriteLine($":: XR Plug-in Management: Disabling {plugin}");
         var success = XRPackageMetadataStore.RemoveLoader(pluginsSettings, GetLoaderName(plugin), buildTargetGroup);
         if (success) {
             Console.WriteLine($":: XR Plug-in Management: Disabled {plugin} plugin on {buildTargetGroup}");
