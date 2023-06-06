@@ -248,15 +248,16 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.xr.picoxr": {
-      "version": "file:PICO Unity Integration SDK-213",
+      "version": "https://github.com/aleksanderderkanosov/PicoUnityIntegration.git",
       "depth": 0,
-      "source": "embedded",
+      "source": "git",
       "dependencies": {
         "com.unity.xr.management": "3.2.16",
         "com.unity.ugui": "1.0.0",
         "com.unity.subsystemregistration": "1.0.6",
         "com.unity.xr.interaction.toolkit": "0.9.4-preview"
-      }
+      },
+      "hash": "1256bd405ce610e4b07839669410d164d4bc3999"
     },
     "com.unity.modules.ai": {
       "version": "1.0.0",
