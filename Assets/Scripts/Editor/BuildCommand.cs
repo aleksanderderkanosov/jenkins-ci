@@ -78,9 +78,9 @@ static class BuildCommand {
         if (xrPlugin.TryConvertToEnum(out XRPluginManagementSettings.Plugin plugin))
             return plugin;
 
-        Console.WriteLine($":: {nameof(xrPlugin)} \"{xrPlugin}\" not defined on enum {nameof(XRPluginManagementSettings.Plugin)}, using {nameof(XRPluginManagementSettings.Plugin.None)} enum to build");
+        Console.WriteLine($":: {nameof(xrPlugin)} \"{xrPlugin}\" not defined on enum {nameof(XRPluginManagementSettings.Plugin)}, using {nameof(XRPluginManagementSettings.Plugin.Oculus)} enum to build");
 
-        return XRPluginManagementSettings.Plugin.None;
+        return XRPluginManagementSettings.Plugin.Oculus;
     }
 
     static BuildTargetGroup GetBuildTargetGroup(BuildTarget buildTarget) {
