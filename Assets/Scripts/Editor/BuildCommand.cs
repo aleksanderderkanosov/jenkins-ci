@@ -29,9 +29,14 @@ static class BuildCommand {
         var buildPath = GetBuildPath();
         var buildName = GetBuildName();
         var buildOptions = GetBuildOptions();
+
+        var scriptingBackend = GetScriptingBackend();
+        PlayerSettings.SetScriptingBackend(targetGroup, scriptingBackend);
+
         Console.WriteLine($":: Ready to start build on {buildTarget}.");
         var fixedBuildPath = GetFixedBuildPath(buildTarget, buildPath, buildName);
 
+        Console.WriteLine($":: ScriptingBackend: {PlayerSettings.GetScriptingBackend(targetGroup)}.");
         var buildReport = BuildPipeline.BuildPlayer(GetEnabledScenes(), fixedBuildPath, buildTarget, buildOptions);
 
         if (buildReport.summary.result != UnityEditor.Build.Reporting.BuildResult.Succeeded)
@@ -57,7 +62,19 @@ static class BuildCommand {
         PlayerSettings.SplashScreen.show = isDevelopmentBuild;
 
         Console.WriteLine(
-            $":: {IS_DEVELOPMENT_BUILD} env var detected, setting \"Development Build\" to {isDevelopmentBuild.ToString()}.");
+            $":: {IS_DEVELOPMENT_BUILD} env var detected, setting \"Development Build\" to {isDevelopmentBuild}.");
+    }
+
+    static ScriptingImplementation GetScriptingBackend() {
+        string scriptingBackendName = GetArgument("scriptingBackend");
+        Console.WriteLine(":: Received scriptingBackend " + scriptingBackendName);
+
+        if (scriptingBackendName.TryConvertToEnum(out ScriptingImplementation scriptingBackend))
+            return scriptingBackend;
+
+        Console.WriteLine($":: {nameof(scriptingBackendName)} \"{scriptingBackendName}\" not defined on enum {nameof(ScriptingImplementation)}, using {nameof(ScriptingImplementation.Mono2x)} enum to build");
+
+        return ScriptingImplementation.Mono2x;
     }
 
     static BuildTarget GetBuildTarget() {
