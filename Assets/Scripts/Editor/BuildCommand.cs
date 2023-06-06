@@ -17,6 +17,9 @@ static class BuildCommand {
         string xrPluginCommand = GetArgument("xrPlugin");
         if (xrPluginCommand != null) {
             var xrPlugin = GetXrPlugin(xrPluginCommand);
+            foreach (XRPluginManagementSettings.Plugin plugin in Enum.GetValues(typeof(XRPluginManagementSettings.Plugin))) {
+                XRPluginManagementSettings.DisablePlugin(targetGroup, plugin);
+            }
             XRPluginManagementSettings.EnablePlugin(targetGroup, xrPlugin);
         }
 
