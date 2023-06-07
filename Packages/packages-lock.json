@@ -11,6 +11,13 @@
       },
       "hash": "421c1eb13c93925a0908d743bd6a79a0d306ab15"
     },
+    "com.antilatency.building-ci": {
+      "version": "https://github.com/aleksanderderkanosov/Unity.BuildingCiPackage.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "d12b20516461abcb706ce44266ef882c65ddfe2e"
+    },
     "com.antilatency.sdk": {
       "version": "https://github.com/AntilatencySDK/Release_4.0.1.git#subset-e0967c849af7107a83a21c3cba3102586fd9ce09",
       "depth": 0,

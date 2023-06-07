@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "com.antilatency.alt-tracking-xr": "https://github.com/antilatency/Unity.AltTrackingXrPackage.git",
+    "com.antilatency.building-ci": "https://github.com/aleksanderderkanosov/Unity.BuildingCiPackage.git",
     "com.antilatency.sdk": "https://github.com/AntilatencySDK/Release_4.0.1.git#subset-e0967c849af7107a83a21c3cba3102586fd9ce09",
     "com.unity.collab-proxy": "1.15.18",
     "com.unity.feature.development": "1.0.1",
