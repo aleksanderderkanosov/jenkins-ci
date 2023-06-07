@@ -27,24 +27,20 @@ pipeline {
         }
 
         stages {
-            stage('Build on Push') {
-                when {
-                    anyOf {
-                        tag "^([0-9]+)\\.([0-9]+)\\.([0-9]+)(?:-([0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*))?(?:\\+[0-9A-Za-z-]+)?\$"
-                        triggeredBy 'githubPush'
-                    }
-                }
+            stage('Init Build'){
                 steps {
                     script {
-                        echo "Build on Push"
-                    }
-                }
-            }
-            stage('Build on Run') {
-                steps {
-                    script {
-                        echo "Build on Run"
-                        echo "${currentBuild.getBuildCauses()}"
+                        if (!currentBuild.getBuildCauses('jenkins.branch.BranchEventCause').isEmpty()) {
+                            stage('Build on Push') {
+                                echo "Build on Push"
+                            }
+                        }
+                        else {
+                            stage('Build on Run') {
+                                echo "Build on Run"
+                                //echo "${currentBuild.getBuildCauses()}"
+                            }    
+                        }
                     }
                 }
             }
