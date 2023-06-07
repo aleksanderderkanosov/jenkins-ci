@@ -16,7 +16,7 @@
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "fdf699515f41267f8b158bdd02e869c24e88160c"
+      "hash": "caee448626ea30d07b1b4c97b1d3328c196f775b"
     },
     "com.antilatency.sdk": {
       "version": "https://github.com/AntilatencySDK/Release_4.0.1.git#subset-e0967c849af7107a83a21c3cba3102586fd9ce09",
