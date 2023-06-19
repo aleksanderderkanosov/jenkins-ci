@@ -1,4 +1,4 @@
-@Library("JenkinsSharedLibrary") _
+@Library("shared-library") _
 
 unityPipelineTemplate {
     productName = "JenkinsCi"
